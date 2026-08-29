@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>民用航空运输企业会计 · 智能教学平台</title>
+<style>
+  :root{
+    --bg:#f4f7fb; --card:#ffffff; --ink:#1f2329; --muted:#5a6573;
+    --primary:#2f6fed; --primary-d:#1d4fc4; --accent:#0fb5ba;
+    --ok:#1f9d55; --warn:#e08a00; --danger:#d64545; --line:#e3e9f2;
+    --chip:#eef3ff; --radius:14px; --shadow:0 2px 10px rgba(31,45,61,.06);
+  }
+  *{box-sizing:border-box}
+  .learn-path{margin-top:16px}
+  .lp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .lp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(max-width:640px){.lp-grid{grid-template-columns:1fr}}
+  .lp-item{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer;transition:.15s}
+  .lp-item:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(47,111,237,.12);transform:translateY(-1px)}
+  .lp-id{flex:0 0 auto;font-size:12px;font-weight:800;color:#fff;background:var(--primary);padding:3px 8px;border-radius:8px;min-width:42px;text-align:center}
+  .lp-body{flex:1 1 auto;min-width:0}
+  .lp-name{font-size:14px;font-weight:700;color:var(--ink)}
+  .lp-meta{font-size:12px;color:var(--muted);margin-top:2px}
+  .lp-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .lp-acts{display:flex;gap:6px;margin-top:8px}
+  .lp-acts button{flex:0 0 auto;font-size:12px;padding:5px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+  .lp-acts .go-kg{background:var(--chip);color:var(--primary-d)}
+  .lp-acts .go-quiz{background:var(--primary);color:#fff}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); font-size:15px; line-height:1.55;
+    -webkit-text-size-adjust:100%;
+  }
+  a{color:var(--primary);text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+  header.top{
+    background:linear-gradient(135deg,var(--primary),var(--primary-d));
+    color:#fff;padding:18px 0 14px;box-shadow:var(--shadow);
+  }
+  header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.5px}
+  header.top .sub{font-size:13px;opacity:.9;margin-top:3px}
+  header.top .ver{display:inline-block;margin-top:6px;font-size:12px;background:rgba(255,255,255,.18);
+    padding:2px 10px;border-radius:20px}
+  nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;position:sticky;top:0;
+    background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
+  nav.tabs button{
+    flex:0 0 auto;border:none;background:transparent;color:var(--muted);font-size:14px;
+    padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:600;min-height:44px;
+  }
+  nav.tabs button.active{background:var(--primary);color:#fff}
+  main{padding:18px 0 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:26px;font-weight:800;color:var(--primary)}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .stat .s{font-size:11.5px;margin-top:4px}
+  .pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600}
+  .pill.ok{background:#e6f6ec;color:var(--ok)}
+  .pill.warn{background:#fdf2dd;color:var(--warn)}
+  .pill.draft{background:#eef1f6;color:var(--muted)}
+  .pill.blue{background:var(--chip);color:var(--primary)}
+  h2.sec{font-size:17px;margin:6px 0 12px;display:flex;align-items:center;gap:8px}
+  h2.sec svg{width:20px;height:20px;flex:0 0 auto}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .filters select,.filters input{
+    border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:14px;
+    background:#fff;color:var(--ink);min-height:42px}
+  .filters input{flex:1;min-width:160px}
+  button.btn{border:none;background:var(--primary);color:#fff;font-weight:700;
+    padding:10px 18px;border-radius:10px;cursor:pointer;font-size:14px;min-height:44px}
+  button.btn.ghost{background:#fff;color:var(--primary);border:1px solid var(--primary)}
+  button.btn.sm{padding:7px 12px;font-size:13px;min-height:38px}
+  button.btn:active{transform:translateY(1px)}
+  button.link{background:none;border:none;color:var(--primary);cursor:pointer;font-size:13px;padding:4px 6px}
+  .kp{border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:#fff;transition:.15s}
+  .kp:hover{border-color:var(--primary)}
+  .kp .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .kp .id{font-size:11.5px;font-weight:700;color:var(--primary);background:var(--chip);
+    padding:2px 8px;border-radius:6px}
+  .kp .tt{font-weight:700;font-size:15px;flex:1}
+  .kp .ly{font-size:11px;color:var(--muted)}
+  .kp .sm{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .kp .detail{display:none;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  .kp.open .detail{display:block}
+  .kp .kpis{font-size:12.5px;color:var(--ink)}
+  .kp .kpis li{margin:3px 0}
+  .diff{display:inline-flex;gap:2px;vertical-align:middle}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
+  .dot.on{background:var(--warn)}
+  .chart-card{display:flex;flex-direction:column;align-items:center}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:8px;justify-content:center}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .quiz-q{font-size:16px;font-weight:600;margin-bottom:12px}
+  .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;
+    border-radius:10px;padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:14.5px;min-height:46px}
+  .opt:hover{border-color:var(--primary)}
+  .opt.sel{border-color:var(--primary);background:var(--primary);color:#fff;font-weight:600}
+  .opt.sel .tk{color:#fff}
+  .opt.right{background:#e6f6ec;border-color:var(--ok)}
+  .opt.wrong{background:#fdeaea;border-color:var(--danger)}
+  .opt .tk{font-weight:700;margin-right:8px;color:var(--primary)}
+  .exp{background:#f6f9fd;border-left:3px solid var(--primary);padding:10px 12px;border-radius:6px;
+    font-size:13.5px;color:var(--ink);margin-top:10px}
+  #ansBox{margin-top:10px}
+  .adv{color:var(--danger);font-weight:600;font-size:13px;margin-right:8px}
+  .qmeta{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .prog{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0}
+  .prog>i{display:block;height:100%;background:var(--primary);width:0}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .muted{color:var(--muted)}
+  .small{font-size:12.5px}
+  .callout{border:1px solid #f4d9a6;background:#fff8ec;border-radius:12px;padding:14px 16px}
+  .callout b{color:var(--warn)}
+  table.t{width:100%;border-collapse:collapse;font-size:13px}
+  table.t th,table.t td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+  table.t th{color:var(--muted);font-weight:600}
+  .score-big{font-size:46px;font-weight:800;color:var(--primary);text-align:center}
+  .tag{font-size:11px;padding:1px 7px;border-radius:6px;background:#eef1f6;color:var(--muted);margin-left:6px}
+  .tag.pending{background:#fdf2dd;color:var(--warn)}
+  .hidden{display:none}
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .footer{text-align:center;color:var(--muted);font-size:12px;padding:18px 0 40px}
+  .empty{padding:30px;text-align:center;color:var(--muted)}
+  @media(max-width:760px){
+    .stat .n{font-size:22px}
+    header.top h1{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1 id="appTitle">民用航空运输企业会计 · 智能教学平台</h1>
+    <div class="sub" id="appSub">知识图谱驱动的智能课程系统</div>
+    <div class="ver" id="appVer">Phase 7 · 部署上线</div>
+  </div>
+</header>
+
+<nav class="tabs wrap" id="nav">
+  <button data-tab="overview" class="active">概览</button>
+  <button data-tab="kg">知识图谱</button>
+  <button data-tab="quiz">练习中心</button>
+  <button data-tab="dash">教师驾驶舱</button>
+  <button data-tab="review">复核中心</button>
+  <button data-tab="agent">智能助教</button>
+</nav>
+
+<main class="wrap" id="view"></main>
+
+<footer class="footer">
+  数据本地离线运行 · 全部内容以教师复核（reviewed）为准 · AI 生成内容标记为待审（pending）
+</footer>
+
+<script src="data.bundle.js"></script>
+<script src="rag-client.js"></script>
+<script>
+(function(){
+  "use strict";
+  var D = window.APP_DATA;
+  var view = document.getElementById("view");
+  if(!D){ view.innerHTML = '<div class="card empty">未加载数据（data.bundle.js）。请确认本文件与 data.bundle.js 在同一目录。</div>'; return; }
+
+  // ---------- helpers ----------
+  function h(tag, attrs, kids){
+    var e=document.createElement(tag);
+    if(attrs) for(var k in attrs){ if(k==="html") e.innerHTML=attrs[k]; else if(k==="class") e.className=attrs[k]; else if(k==="onclick") e.onclick=attrs[k]; else e.setAttribute(k,attrs[k]); }
+    if(kids){ if(!Array.isArray(kids)) kids=[kids]; kids.forEach(function(c){ if(c==null) return; e.appendChild(typeof c==="string"?document.createTextNode(c):c); }); }
+    return e;
+  }
+  function svg(markup){ var d=document.createElement("div"); d.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" '+markup+'</svg>'; return d.firstChild; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+  function byId(arr,key,val){ for(var i=0;i<arr.length;i++) if(arr[i][key]===val) return arr[i]; return null; }
+  function diffDots(n){ var s=""; for(var i=1;i<=3;i++) s+='<span class="dot'+(i<=n?" on":"")+'"></span>'; return '<span class="diff">'+s+'</span>'; }
+  function statusPill(st){ if(st==="reviewed") return '<span class="pill ok">已审</span>'; if(st==="pending") return '<span class="pill warn">AI待审</span>'; return '<span class="pill draft">'+esc(st||"draft")+'</span>'; }
+
+  var KPS = D.knowledge_points, MODS = D.modules, QS = D.questions, CS = D.cases, EDGES = D.edges;
+  var modName = {}; MODS.forEach(function(m){ modName[m.module_id]=m.name; });
+  var kpTitle = {}; KPS.forEach(function(k){ kpTitle[k.kp_id]=k.title; });
+  // edge adjacency
+  var adj = {}; KPS.forEach(function(k){ adj[k.kp_id]=[]; });
+  EDGES.forEach(function(e){ if(adj[e.from]) adj[e.from].push(e); });
+
+  // ---------- charts (inline SVG) ----------
+  function donut(data, colors, size){
+    size=size||180; var r=size/2-14, cx=size/2, cy=size/2, total=0, i;
+    for(i=0;i<data.length;i++) total+=data[i].v;
+    var ns="", ang=-Math.PI/2, circ=2*Math.PI*r;
+    for(i=0;i<data.length;i++){
+      var frac=data[i].v/total, len=frac*circ;
+      ns+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+colors[i%colors.length]+'" stroke-width="16" '+
+          'stroke-dasharray="'+len+' '+(circ-len)+'" stroke-dashoffset="'+(-ang*circ)+'" transform="rotate(-90 '+cx+' '+cy+')"></circle>';
+      ang+=frac*2*Math.PI;
+    }
+    ns+='<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="22" font-weight="800" fill="#1b6ec2">'+total+'</text>';
+    ns+='<text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" font-size="11" fill="#6b7a90">知识点</text>';
+    return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+ns+'</svg>';
+  }
+  function hbars(rows, color, max){
+    max = max || Math.max.apply(null, rows.map(function(r){return r.v;})) || 1;
+    var W=320, rowH=26, pad=92, bw=W-pad-10, H=rows.length*rowH+10;
+    var ns="";
+    rows.forEach(function(r,i){
+      var y=i*rowH+8, w=Math.max(2, r.v/max*bw);
+      ns+='<text x="0" y="'+(y+13)+'" font-size="11.5" fill="#1f2d3d">'+esc(r.k)+'</text>';
+      ns+='<rect x="'+pad+'" y="'+y+'" width="'+bw+'" height="15" rx="4" fill="#eef3fa"></rect>';
+      ns+='<rect x="'+pad+'" y="'+y+'" width="'+w+'" height="15" rx="4" fill="'+color+'"></rect>';
+      ns+='<text x="'+(pad+w+5)+'" y="'+(y+13)+'" font-size="11" fill="#6b7a90">'+r.v+'</text>';
+    });
+    return '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+ns+'</svg>';
+  }
+  function lineChart(series, W){
+    W=W||320; var H=150, padL=30, padB=22, padT=12, padR=10;
+    var rows=series.map(function(s){return s.data;});
+    var maxV=Math.max.apply(null, [].concat.apply([], rows))||1;
+    var n=Math.max.apply(null, rows.map(function(r){return r.length;}));
+    var plotW=W-padL-padR, plotH=H-padT-padB;
+    var ns="";
+    // axes
+    ns+='<line x1="'+padL+'" y1="'+padT+'" x2="'+padL+'" y2="'+(H-padB)+'" stroke="#e3e9f2"/>';
+    ns+='<line x1="'+padL+'" y1="'+(H-padB)+'" x2="'+(W-padR)+'" y2="'+(H-padB)+'" stroke="#e3e9f2"/>';
+    for(var g=0;g<=4;g++){ var yy=padT+plotH*g/4; ns+='<text x="2" y="'+(yy+3)+'" font-size="9" fill="#9aa7b8">'+Math.round(maxV*(1-g/4))+'</text>'; }
+    var colors=["#1b6ec2","#0fb5ba","#e08a00","#d64545","#7a5cc0","#1f9d55"];
+    series.forEach(function(s,si){
+      var d="", step=plotW/(n-1);
+      s.data.forEach(function(v,i){
+        var x=padL+step*i, y=padT+plotH*(1-v/maxV);
+        d+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)+" ";
+      });
+      ns+='<path d="'+d+'" fill="none" stroke="'+colors[si%colors.length]+'" stroke-width="2.5"/>';
+    });
+    return '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+ns+'</svg>';
+  }
+
+  // ---------- TAB: overview ----------
+  function renderOverview(){
+    var s=D.meta.stats, c=D.course;
+    var cards=[
+      {n:c.total_hours, l:"总学时", s:'理论 '+c.theory_hours+' / 实验 '+c.lab_hours},
+      {n:s.modules, l:"教学模块", s:"M01–M16"},
+      {n:s.knowledge_points, l:"知识点", s:"五层知识图谱"},
+      {n:s.cases, l:"教学案例", s:'待审 '+s.pending_cases},
+      {n:s.questions, l:"题库题目", s:'待审 '+s.pending_questions},
+      {n:s.edges, l:"关系边", s:"知识关联"}
+    ];
+    var grid=h("div",{class:"grid g3"});
+    cards.forEach(function(cd){ grid.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(cd.n)]),h("div",{class:"l"},[cd.l]),h("div",{class:"s"},[h("span",{class:"muted"},[cd.s])])])); });
+
+    // layer donut
+    var layers=[1,2,3,4,5], layColors=["#1b6ec2","#0fb5ba","#e08a00","#7a5cc0","#1f9d55"];
+    var layerData=layers.map(function(L){ return {k:"L"+L, v:KPS.filter(function(k){return k.layer===L;}).length}; });
+    // type bars
+    var torder=["single","multiple","judge","entry","calc","case","comprehensive","open"];
+    var tlabel={single:"单选",multiple:"多选",judge:"判断",entry:"分录",calc:"计算",case:"案例",comprehensive:"综合",open:"开放"};
+    var typeRows=torder.map(function(t){ return {k:tlabel[t], v:s.question_types[t]||0}; });
+
+    var callout=h("div",{class:"callout"},[
+      h("b",["待教师复核提醒："]),
+      ' 当前题库有 '+s.pending_questions+' 道、案例 '+s.pending_cases+' 个由 AI 生成并标记为 pending（依据原则五：AI 生成内容不审不权威）。',
+      h("br"),' 请在「练习中心」勾选“包含待审”预览，或于「知识图谱」按状态筛选，复核通过后于数据层将 review_status 改为 approved。'
+    ]);
+
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconBook(),"课程概览"]));
+    view.appendChild(grid);
+    view.appendChild(h("div",{class:"card"},[callout]));
+    var charts=h("div",{class:"grid g2"});
+    var legend=h("div",{class:"legend"});
+    layerData.forEach(function(d,i){
+      legend.appendChild(h("span",{html:'<i style="background:'+layColors[i]+'"></i>L'+d.k.slice(1)+" "+d.v}));
+    });
+    var donutCard=h("div",{class:"card chart-card"},[
+      h("h2",{class:"sec"},["五层知识点分布"]),
+      h("div",{html:donut(layerData,layColors,180)}),
+      legend
+    ]);
+    charts.appendChild(donutCard);
+    charts.appendChild(h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["题型分布"]), h("div",{html:hbars(typeRows,"#1b6ec2")})]));
+    view.appendChild(charts);
+    // 课程学习路径（对标会小导·学习中心「四课次学习地图」）
+    var lpCard=h("div",{class:"card learn-path"},[
+      h("div",{class:"lp-head"},[h("h2",{class:"sec"},[iconGraph(),"课程学习路径"]), h("span",{class:"muted",style:"font-size:12px"},["点击模块进入图谱 / 练习"])])
+    ]);
+    var lpGrid=h("div",{class:"lp-grid"});
+    MODS.slice().sort(function(a,b){ return a.module_id<b.module_id?-1:1; }).forEach(function(m){
+      var acts=h("div",{class:"lp-acts"});
+      acts.appendChild(h("button",{class:"go-kg",onclick:function(e){e.stopPropagation();kgState.mod=m.module_id;go("kg");}},[ "看图谱" ]));
+      acts.appendChild(h("button",{class:"go-quiz",onclick:function(e){e.stopPropagation();go("quiz");}},[ "做练习" ]));
+      var body=[ h("div",{class:"lp-name"},[m.module_id+" "+m.name]) ];
+      if(m.hours) body.push(h("div",{class:"lp-meta"},["学时 "+m.hours]));
+      if(m.description) body.push(h("div",{class:"lp-desc"},[m.description]));
+      body.push(acts);
+      lpGrid.appendChild(h("div",{class:"lp-item",onclick:function(){kgState.mod=m.module_id;go("kg");}},[ h("div",{class:"lp-id"},[m.module_id]), h("div",{class:"lp-body"},body) ]));
+    });
+    lpCard.appendChild(lpGrid);
+    view.appendChild(lpCard);
+  }
+
+  // ---------- TAB: knowledge graph ----------
+  var kgState={layer:"",mod:"",status:"",q:""};
+  function renderKG(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconGraph(),"知识图谱浏览"]));
+    // filters
+    var f=h("div",{class:"filters"});
+    var selL=h("select",{onchange:function(e){kgState.layer=e.target.value;drawKGList();}});
+    selL.appendChild(h("option",{value:""},["全部层级"]));
+    [1,2,3,4,5].forEach(function(L){ selL.appendChild(h("option",{value:String(L)},["L"+L])); });
+    var selM=h("select",{onchange:function(e){kgState.mod=e.target.value;drawKGList();}});
+    selM.appendChild(h("option",{value:""},["全部模块"]));
+    MODS.forEach(function(m){ selM.appendChild(h("option",{value:m.module_id},[m.module_id+" "+m.name])); });
+    var selS=h("select",{onchange:function(e){kgState.status=e.target.value;drawKGList();}});
+    [["","全部状态"],["reviewed","仅已审"],["pending","仅待审"]].forEach(function(o){ selS.appendChild(h("option",{value:o[0]},[o[1]])); });
+    var inp=h("input",{type:"search",placeholder:"搜索知识点标题 / 编号 / 关键词",oninput:function(e){kgState.q=e.target.value.trim();drawKGList();}});
+    f.appendChild(selL); f.appendChild(selM); f.appendChild(selS); f.appendChild(inp);
+    view.appendChild(f);
+
+    var list=h("div",{id:"kgList"});
+    view.appendChild(list);
+    drawKGList();
+  }
+  function drawKGList(){
+    var list=document.getElementById("kgList"); if(!list) return;
+    var q=kgState.q.toLowerCase();
+    var filtered=KPS.filter(function(k){
+      if(kgState.layer && String(k.layer)!==kgState.layer) return false;
+      if(kgState.mod && k.module_id!==kgState.mod) return false;
+      if(kgState.status && k.status!==kgState.status) return false;
+      if(q && (k.title+k.kp_id+(k.summary||"")+(k.key_points||[]).join("")).toLowerCase().indexOf(q)<0) return false;
+      return true;
+    });
+    if(!filtered.length){ list.innerHTML='<div class="card empty">无匹配知识点</div>'; return; }
+    // group by layer
+    var byLayer={}; filtered.forEach(function(k){ (byLayer[k.layer]=byLayer[k.layer]||[]).push(k); });
+    list.innerHTML="";
+    Object.keys(byLayer).sort().forEach(function(L){
+      list.appendChild(h("h2",{class:"sec"},["L"+L+" · 第"+L+"层（"+byLayer[L].length+"）"]));
+      var g=h("div",{class:"grid g2"});
+      byLayer[L].sort(function(a,b){return a.kp_id<b.kp_id?-1:1;}).forEach(function(k){
+        var card=h("div",{class:"kp"});
+        card.appendChild(h("div",{class:"hd"},[
+          h("span",{class:"id"},[k.kp_id]),
+          h("span",{class:"tt"},[k.title]),
+          statusPill(k.status)
+        ]));
+        card.appendChild(h("div",{class:"sm"},[
+          h("span",{class:"ly"},[modName[k.module_id]||k.module_id]), " · 难度 "+diffDots(k.difficulty||1)
+        ]));
+        var det=h("div",{class:"detail"});
+        det.appendChild(h("div",{class:"sm",style:"margin-bottom:6px"},[k.summary||""]));
+        if(k.key_points&&k.key_points.length){
+          det.appendChild(h("div",{class:"small muted"},["关键要点："]));
+          var ul=h("ul",{class:"kpis"}); k.key_points.forEach(function(p){ ul.appendChild(h("li",[p])); }); det.appendChild(ul);
+        }
+        if(k.common_mistakes&&k.common_mistakes.length){
+          det.appendChild(h("div",{class:"small muted",style:"margin-top:6px"},["易错点："]));
+          var ul2=h("ul",{class:"kpis"}); k.common_mistakes.forEach(function(p){ ul2.appendChild(h("li",["⚠ "+p])); }); det.appendChild(ul2);
+        }
+        // related via edges
+        var rel=adj[k.kp_id]||[];
+        if(rel.length){
+          det.appendChild(h("div",{class:"small muted",style:"margin-top:6px"},["知识关联（"+rel.length+"）："]));
+          var rl=h("div",{class:"small"});
+          rel.slice(0,8).forEach(function(e){
+            rl.appendChild(h("span",{class:"tag"},[e.type+" → "+e.to+" "+(kpTitle[e.to]||"")]));
+          });
+          det.appendChild(rl);
+        }
+        var relCases=CS.filter(function(c){return (c.knowledge_points||[]).indexOf(k.kp_id)>=0;});
+        var relQs=QS.filter(function(qq){return qq.kp_id===k.kp_id;});
+        det.appendChild(h("div",{class:"small muted",style:"margin-top:6px"},["关联案例 "+relCases.length+" · 关联题目 "+relQs.length]));
+        card.appendChild(det);
+        card.onclick=function(){ card.classList.toggle("open"); };
+        g.appendChild(card);
+      });
+      list.appendChild(g);
+    });
+    list.insertAdjacentHTML("afterbegin",'<div class="small muted" style="margin-bottom:8px">共 '+filtered.length+' 个知识点（点击卡片展开要点/关联）</div>');
+  }
+
+  // ---------- TAB: quiz ----------
+  var quiz=null;
+  function renderQuiz(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconQuiz(),"练习中心"]));
+    var cfg=h("div",{class:"card"});
+    cfg.appendChild(h("div",{class:"filters"},[
+      selModule(function(v){quiz_cfg.mod=v;}),
+      selType(function(v){quiz_cfg.type=v;}),
+      selDiff(function(v){quiz_cfg.diff=v;})
+    ]));
+    var incl=h("label",{class:"small",style:"display:flex;align-items:center;gap:6px;margin:4px 0 10px"});
+    var cb=h("input",{type:"checkbox",onchange:function(e){quiz_cfg.includePending=e.target.checked;}});
+    incl.appendChild(cb); incl.appendChild(document.createTextNode(" 包含 AI 待审题目（预览待复核内容）"));
+    cfg.appendChild(incl);
+    var numwrap=h("div",{class:"filters"});
+    var num=h("input",{type:"number",value:"10",min:"1",max:"50",style:"max-width:120px"});
+    numwrap.appendChild(h("span",{class:"small muted"},["本次题量："])); numwrap.appendChild(num);
+    cfg.appendChild(numwrap);
+    var start=h("button",{class:"btn",onclick:function(){ startQuiz(parseInt(num.value,10)||10); }},["开始练习"]);
+    cfg.appendChild(start);
+    view.appendChild(cfg);
+    var box=h("div",{id:"quizBox"});
+    view.appendChild(box);
+  }
+  var quiz_cfg={mod:"",type:"",diff:"",includePending:false};
+  function selModule(cb){ var s=h("select",{onchange:function(e){cb(e.target.value);}}); s.appendChild(h("option",{value:""},["全部模块"])); MODS.forEach(function(m){s.appendChild(h("option",{value:m.module_id},[m.module_id+" "+m.name]));}); return s; }
+  function selType(cb){ var s=h("select",{onchange:function(e){cb(e.target.value);}}); s.appendChild(h("option",{value:""},["全部题型"]));
+    var tlabel={single:"单选",multiple:"多选",judge:"判断",entry:"分录",calc:"计算",case:"案例",comprehensive:"综合",open:"开放"};
+    Object.keys(tlabel).forEach(function(t){s.appendChild(h("option",{value:t},[tlabel[t]]));}); return s; }
+  function selDiff(cb){ var s=h("select",{onchange:function(e){cb(e.target.value);}}); s.appendChild(h("option",{value:""},["全部难度"])); ["easy","medium","hard"].forEach(function(d){s.appendChild(h("option",{value:d},[{easy:"易",medium:"中",hard:"难"}[d]]));}); return s; }
+
+  function startQuiz(n){
+    var pool=QS.filter(function(q){
+      if(quiz_cfg.mod && q.module_id!==quiz_cfg.mod) return false;
+      if(quiz_cfg.type && q.type!==quiz_cfg.type) return false;
+      if(quiz_cfg.diff && q.difficulty!==quiz_cfg.diff) return false;
+      if(!quiz_cfg.includePending && q.review_status==="pending") return false;
+      return true;
+    });
+    if(!pool.length){ document.getElementById("quizBox").innerHTML='<div class="card empty">该筛选下没有题目，试着放宽条件或勾选“包含待审”。</div>'; return; }
+    // shuffle
+    for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+    quiz={items:pool.slice(0,Math.min(n,pool.length)),idx:0,score:0,answers:[],wrong:0};
+    renderQuizItem();
+  }
+  function renderQuizItem(){
+    var box=document.getElementById("quizBox"); var q=quiz.items[quiz.idx];
+    var objective = (q.type==="single"||q.type==="multiple"||q.type==="judge");
+    var wrap=h("div",{class:"card"});
+    wrap.appendChild(h("div",{class:"qmeta"},[
+      h("span",{class:"pill blue"},[q.question_id]),
+      h("span",{class:"tag"},[modName[q.module_id]||q.module_id]),
+      h("span",{class:"tag"},[kpTitle[q.kp_id]||q.kp_id]),
+      h("span",{class:"tag"},[{easy:"易",medium:"中",hard:"难"}[q.difficulty]||q.difficulty]),
+      q.review_status==="pending"?h("span",{class:"tag pending"},["AI待审"]):null
+    ]));
+    wrap.appendChild(h("div",{class:"quiz-q"},[q.stem]));
+    var ansBox=h("div",{class:"exp",id:"ansBox",style:"display:none"}); wrap.appendChild(ansBox);
+    var prog=h("div",{class:"prog"}); var bar=h("i"); bar.style.width=((quiz.idx)/quiz.items.length*100)+"%"; prog.appendChild(bar); wrap.appendChild(prog);
+    wrap.appendChild(h("div",{class:"small muted"},["第 "+(quiz.idx+1)+" / "+quiz.items.length+" 题"]));
+
+    var sel={};
+    function submit(){
+      if(subBtn.disabled) return;
+      var correct = judge(q, sel);
+      if(correct) quiz.score++; else quiz.wrong++;
+      quiz.answers[quiz.idx]=correct;
+      // color options
+      opts.forEach(function(o){
+        var key=o._key;
+        if(isCorrectKey(q,key)) o.el.classList.add("right");
+        else if(sel[key]) o.el.classList.add("wrong");
+        o.el.disabled=true;
+      });
+      subBtn.disabled=true;
+      // fill the pre-placed answer area below the stem
+      ansBox.innerHTML="";
+      if(objective){
+        ansBox.appendChild(h("div",["正确答案："+answerText(q)]));
+      } else {
+        ansBox.appendChild(h("div",{class:"muted small"},["参考答案："]));
+        ansBox.appendChild(h("div",[q.reference_answer||q.answer||"—"]));
+      }
+      if(q.explanation) ansBox.appendChild(h("div",{style:"margin-top:6px"},["解析："+q.explanation]));
+      ansBox.style.display="";
+      var nav=h("div",{class:"row",style:"margin-top:12px"});
+      if(!correct) nav.appendChild(h("span",{class:"adv"},["⚠ 建议把这题加入错题本"]));
+      nav.appendChild(h("span",{class:"small"},[correct?"✅ 答对":"❌ 答错"]));
+      nav.appendChild(h("button",{class:"btn",onclick:next},[quiz.idx>=quiz.items.length-1?"查看结果":"下一题"]));
+      ansBox.appendChild(nav);
+      // progress bar advances one notch immediately
+      prog.firstChild.style.width=((quiz.idx+1)/quiz.items.length*100)+"%";
+      // scroll the answer into view so feedback is never missed
+      setTimeout(function(){ try{ ansBox.scrollIntoView({block:'center',behavior:'smooth'}); }catch(e){} },50);
+      // auto-advance after answering: correct→1.5s, wrong→4s (more time to read the explanation)
+      var delay = correct ? 1500 : 4000;
+      setTimeout(function(){ if(document.body.contains(subBtn) && subBtn.disabled) next(); }, delay);
+    }
+    var opts=[];
+    if(objective){
+      var keys, labels;
+      if(q.type==="judge"){ keys=["对","错"]; }
+      else { keys=q.options.slice(); }
+      keys.forEach(function(key){
+        var o=h("button",{class:"opt"});
+        var tk=h("span",{class:"tk"},[ (q.type==="multiple"?"☐":"") ]);
+        o.appendChild(tk); o._tk=tk;
+        o.appendChild(document.createTextNode(key));
+        o.onclick=function(){
+          if(o.disabled) return;
+          if(q.type==="multiple"){
+            sel[key]=!sel[key];
+            var on=!!sel[key];
+            o.classList.toggle("sel",on);
+            if(o._tk) o._tk.textContent = on?"☑":"☐";
+          } else {
+            for(var k in sel) delete sel[k];
+            sel[key]=true;
+            opts.forEach(function(x){ x.el.classList.remove("sel"); if(x.el._tk) x.el._tk.textContent="☐"; });
+            o.classList.add("sel");
+            if(o._tk) o._tk.textContent="●";
+          }
+        };
+        o._key=key; o.el=o; opts.push({key:key,el:o}); wrap.appendChild(o);
+      });
+    } else {
+      wrap.appendChild(h("div",{class:"small muted"},["本题为"+( {entry:"分录",calc:"计算",case:"案例分析",comprehensive:"综合",open:"开放"}[q.type]||"主观" )+"题，请作答后对照参考答案。"]));
+      var ta=h("textarea",{rows:"4",style:"width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:14px;font-family:inherit"});
+      wrap.appendChild(ta);
+    }
+    var subBtn=h("button",{class:"btn",style:"margin-top:12px",onclick:submit},[objective?"提交答案":"显示参考答案"]);
+    wrap.appendChild(subBtn);
+    box.innerHTML=""; box.appendChild(wrap);
+  }
+  function isCorrectKey(q,key){ if(q.type==="judge") return (key==="对"&&q.answer===true)||(key==="错"&&q.answer===false); return key===q.answer; }
+  function judge(q,sel){
+    if(q.type==="single"||q.type==="judge"){ for(var k in sel) if(sel[k]) return isCorrectKey(q,k); return false; }
+    if(q.type==="multiple"){ var ans=Array.isArray(q.answer)?q.answer:[q.answer]; var set=Object.keys(sel).filter(function(k){return sel[k];});
+      return ans.length===set.length && ans.every(function(a){return set.indexOf(a)>=0;}); }
+    return true; // subjective: counted on review
+  }
+  function answerText(q){ if(q.type==="judge") return q.answer?"对":"错"; return q.answer; }
+  function next(){
+    if(quiz.idx>=quiz.items.length-1){ renderResult(); }
+    else { quiz.idx++; renderQuizItem(); }
+  }
+  function renderResult(){
+    var box=document.getElementById("quizBox");
+    var objCount=quiz.items.filter(function(q){return q.type==="single"||q.type==="multiple"||q.type==="judge";}).length;
+    var rate = objCount? Math.round(quiz.score/objCount*100):0;
+    var card=h("div",{class:"card"});
+    card.appendChild(h("div",{class:"score-big"},[quiz.score+"/"+objCount]));
+    card.appendChild(h("div",{class:"muted",style:"text-align:center"},["客观题正确率 "+rate+"% · 本次 "+quiz.items.length+" 题（含 "+ (quiz.items.length-objCount) +" 道主观题需自评）"]));
+    card.appendChild(h("div",{class:"row",style:"justify-content:center;margin-top:14px"},[
+      h("button",{class:"btn ghost",onclick:renderQuiz},["重新设置"]),
+      h("button",{class:"btn",onclick:function(){ startQuiz(quiz.items.length); }},["再来一次"])
+    ]));
+    box.innerHTML=""; box.appendChild(card);
+    // save session best to localStorage
+    try{
+      var key="caa_quiz_best";
+      var best=parseInt(localStorage.getItem(key)||"0",10);
+      if(rate>best){ localStorage.setItem(key,String(rate)); }
+    }catch(e){}
+  }
+
+  // ---------- TAB: dashboard ----------
+  var currentStudent = "S2026001";
+  var currentClass = "全部";
+  function renderDash(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconDash(),"教师驾驶舱"]));
+
+    // class + student selectors (Phase 7: multi-class)
+    var profs = D.student_profiles || {};
+    var allClasses = Object.keys(profs).map(function(s){ return profs[s].class || "未分班"; })
+      .filter(function(v,i,a){ return a.indexOf(v) === i; });
+    var classList = ["全部"].concat(allClasses.sort());
+    var stuOpts = Object.keys(profs).filter(function(sid){
+      return currentClass === "全部" || (profs[sid].class || "") === currentClass;
+    });
+    if (stuOpts.indexOf(currentStudent) < 0) currentStudent = stuOpts[0] || "";
+    var clsSel = h("select",{id:"clsSel", style:"min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fff;max-width:200px"},
+      classList.map(function(c){ return h("option",{value:c, selected:(c===currentClass?"selected":null)},[c]); }));
+    clsSel.onchange = function(){ currentClass = this.value; renderDash(); };
+    var sel = h("select",{id:"stuSel", style:"min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fff;max-width:320px"},
+      stuOpts.map(function(sid){
+        var p = profs[sid];
+        return h("option",{value:sid, selected:(sid===currentStudent?"selected":null)},[sid+" "+(p.name||"")+"（"+(p.class||"")+"）"]);
+      }));
+    sel.onchange = function(){ currentStudent = this.value; renderDash(); };
+    view.appendChild(h("div",{class:"filters"},[
+      h("span",{class:"small muted"},["班级："]), clsSel,
+      h("span",{class:"small muted",style:"margin-left:12px"},["查看学生："]), sel
+    ]));
+    var td=D.teacher_dashboard, ov=td.overview;
+    var dash=h("div",{class:"dash-grid"});
+    [["学生人数",ov.student_count],["平均掌握率",Math.round(ov.avg_mastery*100)+"%"],["活跃率",Math.round(ov.active_rate*100)+"%"],
+     ["完成率",Math.round(ov.completion_rate*100)+"%"],["平均成绩",ov.avg_score],["风险学生",(ov.risk_students||[]).length]]
+     .forEach(function(p){ dash.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])])); });
+    view.appendChild(h("div",{class:"card"},[dash]));
+
+    // mastery distribution histogram
+    var kgv=td.knowledge_graph_view;
+    var buckets=[0,0,0,0,0]; // 0-.2,.2-.4,.4-.6,.6-.8,.8-1
+    kgv.forEach(function(k){ var r=k.mastery_rate||0; var b=Math.min(4,Math.floor(r/0.2)); buckets[b]++; });
+    var bh=h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["知识点掌握率分布（75）"]),
+      h("div",{html:hbars([{k:"0-20%",v:buckets[0]},{k:"20-40%",v:buckets[1]},{k:"40-60%",v:buckets[2]},{k:"60-80%",v:buckets[3]},{k:"80-100%",v:buckets[4]}],"#0fb5ba")})]);
+    // error hotspots
+    var eh=td.question_bank_analysis.error_hotspots||{};
+    var ehRows=Object.keys(eh).map(function(k){ return {k:k+" "+(kpTitle[k]||""), v:Math.round(eh[k]*100)}; }).sort(function(a,b){return b.v-a.v;}).slice(0,6);
+    var ehc=h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["错误率热点（Top）"]), h("div",{html:hbars(ehRows,"#d64545")})]);
+    // assessment composition
+    var ass=td.assessment; var assRows=Object.keys(ass).map(function(k){ return {k:k, v:Math.round(ass[k].reduce(function(a,b){return a+b;},0)/ass[k].length)}; });
+    var assc=h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["成绩构成（均值）"]), h("div",{html:hbars(assRows,"#1b6ec2")})]);
+    var charts=h("div",{class:"grid g2"}); charts.appendChild(bh); charts.appendChild(ehc); charts.appendChild(assc);
+    view.appendChild(charts);
+
+    // quality flags / pending review
+    var qf=td.question_bank_analysis.quality_flags||[];
+    var qfCard=h("div",{class:"card"});
+    qfCard.appendChild(h("h2",{class:"sec"},[iconWarn(),"待复核质量标记（"+qf.length+"）"]));
+    qfCard.appendChild(h("div",{class:"small muted"},["以下题目被标记为质量疑点，建议教师优先复核（原则五：不审不权威）。"]));
+    var qt=h("table",{class:"t"}); qt.appendChild(h("tr",[h("th",["题号"]),h("th",["题型"]),h("th",["知识点"]),h("th",["状态"])]));
+    qf.slice(0,15).forEach(function(id){ var q=byId(QS,"question_id",id)||{}; qt.appendChild(h("tr",[h("td",[id]),h("td",[q.type||"—"]),h("td",[kpTitle[q.kp_id]||q.kp_id||"—"]),h("td",[statusPill(q.review_status)])])); });
+    qfCard.appendChild(qt);
+    if(qf.length>15) qfCard.appendChild(h("div",{class:"small muted",style:"margin-top:6px"},["… 其余 "+(qf.length-15)+" 条见数据层"]));
+    view.appendChild(qfCard);
+
+    // AI teaching suggestions
+    var ai=td.ai_teaching_analysis||{};
+    if(ai.weekly_suggestions){
+      var aiCard=h("div",{class:"card"});
+      aiCard.appendChild(h("h2",{class:"sec"},[iconBulb(),"AI 教学建议"]));
+      var ul=h("ul",{class:"kpis"}); ai.weekly_suggestions.forEach(function(s){ ul.appendChild(h("li",[s])); }); aiCard.appendChild(ul);
+      view.appendChild(aiCard);
+    }
+
+    // ---------- class overview (Phase 7: class-scoped) ----------
+    var profs2 = D.student_profiles || {};
+    var stuClass = {}; Object.keys(profs2).forEach(function(s){ stuClass[s] = profs2[s].class || ""; });
+    var sidsAll = Object.keys(profs2);
+    var sids = sidsAll.filter(function(sid){ return currentClass === "全部" || stuClass[sid] === currentClass; });
+    var lrAll = (D.learning_records || []).filter(function(r){ return currentClass === "全部" || stuClass[r.student_id] === currentClass; });
+    var avgMastery = 0, sCount = sids.length;
+    sids.forEach(function(sid){
+      var mm = profs2[sid].mastery_map || {};
+      var ks = Object.keys(mm); if(!ks.length) return;
+      var s=0; ks.forEach(function(k){ s+=mm[k]; }); avgMastery += s/ks.length;
+    });
+    if(sCount) avgMastery = avgMastery/sCount;
+    var byAction = {}; var scoreSum=0, scoreN=0;
+    lrAll.forEach(function(r){ byAction[r.action]=(byAction[r.action]||0)+1; if(typeof r.score==="number"){ scoreSum+=r.score; scoreN++; } });
+    var actionRows = ["quiz","experiment","read","ai_chat"].map(function(a){ return {k:a, v:byAction[a]||0}; });
+    var riskN = sids.filter(function(sid){
+      var p=profs2[sid]; var mm=p.mastery_map||{}; var ks=Object.keys(mm);
+      var m=0; if(ks.length){ ks.forEach(function(k){m+=mm[k];}); m=m/ks.length; }
+      return (p.progress||0) < 0.7 || m < 0.6;
+    }).length;
+    var clsLabel = currentClass === "全部" ? "全部班级" : currentClass;
+    var clsCard=h("div",{class:"card"});
+    clsCard.appendChild(h("h2",{class:"sec"},[iconDash(),"班级概览 · "+clsLabel+"（"+sCount+" 人在册）"]));
+    var clsDash=h("div",{class:"dash-grid"});
+    [["在册学生", sCount],["平均掌握率", Math.round(avgMastery*100)+"%"],
+     ["平均学习分", scoreN? Math.round(scoreSum/scoreN):"—"],["风险学生", riskN],
+     ["学习记录", lrAll.length]]
+     .forEach(function(p){ clsDash.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])])); });
+    clsCard.appendChild(clsDash);
+    clsCard.appendChild(h("div",{class:"chart-card",style:"margin-top:12px"},[h("div",{class:"small muted"},["学习活动分布"]), h("div",{html:hbars(actionRows,"#1b6ec2")})]));
+    view.appendChild(clsCard);
+
+    // student profile (selected)
+    var sp=(D.student_profiles && D.student_profiles[currentStudent]) || D.student_profile;
+    var spCard=h("div",{class:"card"});
+    spCard.appendChild(h("h2",{class:"sec"},[iconUser(),"学生画像 · "+sp.name+"（"+sp.student_id+" · "+(sp.class||"")+"）"]));
+    var comp=sp.competencies||{};
+    var series=Object.keys(comp).map(function(cid){ return {name:cid, data:comp[cid].growth_curve||[]}; });
+    var lc=h("div",{class:"chart-card"},[h("div",{class:"small muted"},["能力成长曲线"]), h("div",{html:lineChart(series,340)})]);
+    spCard.appendChild(lc);
+    // mastery heat list
+    var mm=sp.mastery_map||{};
+    var mmRows=Object.keys(mm).map(function(k){ return {k:k+" "+(kpTitle[k]||""), v:Math.round(mm[k]*100)}; });
+    spCard.appendChild(h("div",{class:"chart-card",style:"margin-top:12px"},[h("div",{class:"small muted"},["知识点掌握度（"+mmRows.length+"）"]), h("div",{html:hbars(mmRows,"#1f9d55")})]));
+    // experiment progress
+    var ep=sp.experiment_progress||[];
+    var epDone=ep.filter(function(x){return x.status==="done";}).length;
+    spCard.appendChild(h("div",{class:"small muted",style:"margin-top:12px"},["实验完成 "+epDone+" / "+ep.length+" · 学习进度 "+Math.round((sp.progress||0)*100)+"% · AI 互动 "+sp.ai_interactions+" 次"]));
+    view.appendChild(spCard);
+  }
+
+  // ---------- TAB: review center ----------
+  var REVIEW_KEY = "wb_ca_review";
+  function loadOverlay(){
+    try{ var o=JSON.parse(localStorage.getItem(REVIEW_KEY)||"{}"); return o&&o.questions?o:{questions:{},cases:{}}; }
+    catch(e){ return {questions:{},cases:{}}; }
+  }
+  function saveOverlay(o){ try{ localStorage.setItem(REVIEW_KEY, JSON.stringify(o)); }catch(e){} }
+
+  function renderReview(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconWarn(),"复核中心"]));
+    var o=loadOverlay();
+    var pendingQ = QS.filter(function(q){ return q.review_status==="pending" && !o.questions[q.question_id]; });
+    var pendingC = CS.filter(function(c){ return c.review_status==="pending" && !o.cases[c.case_id]; });
+    var appQ = Object.keys(o.questions).filter(function(k){ return o.questions[k].status==="approved"; }).length;
+    var appC = Object.keys(o.cases).filter(function(k){ return o.cases[k].status==="approved"; }).length;
+    var rejQ = Object.keys(o.questions).filter(function(k){ return o.questions[k].status==="rejected"; }).length;
+    var rejC = Object.keys(o.cases).filter(function(k){ return o.cases[k].status==="rejected"; }).length;
+
+    var dash=h("div",{class:"dash-grid"});
+    [["待审题", pendingQ.length],["已通过题", appQ],["已退例题", rejQ],
+     ["待审案例", pendingC.length],["已通过案例", appC],["已退返案例", rejC]]
+     .forEach(function(p){ dash.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])])); });
+    view.appendChild(h("div",{class:"card"},[dash]));
+
+    view.appendChild(h("div",{class:"callout"},[
+      h("b",["复核闭环："]),"前端标记「通过 / 退回」后写入本地复核缓存（localStorage），可一键导出 overlay JSON。",
+      "教师在本机运行 ", h("code",["python tools/apply_review.py --overlay review.json"]),
+      " 即可回写 data/*.json 并自动重新打包前端，使待审计数真实下降。浏览器无法直接执行 Python。"
+    ]));
+
+    var expBtn=h("button",{class:"btn sm", onclick:exportOverlay},["导出复核结果 JSON"]);
+    view.appendChild(h("div",{class:"row",style:"margin:6px 0 14px"},[expBtn,
+      h("span",{class:"small muted"},["已决策：题 "+(appQ+rejQ)+" / 案例 "+(appC+rejC)])]));
+
+    // filters
+    var types={}; pendingQ.forEach(function(q){ types[q.type]=(types[q.type]||0)+1; });
+    pendingC.forEach(function(c){ types["案例·"+c.type]=(types["案例·"+c.type]||0)+1; });
+    var typeSel=h("select",{id:"rvType"},[h("option",{value:""},["全部类型"])]
+      .concat(Object.keys(types).map(function(t){ return h("option",{value:t},[t+" ("+types[t]+")"]); })));
+    var modSel=h("select",{id:"rvMod"},[h("option",{value:""},["全部模块"])]
+      .concat(MODS.map(function(m){ return h("option",{value:m.module_id},[m.module_id+" "+m.name]); })));
+    var diffSel=h("select",{id:"rvDiff"},[h("option",{value:""},["全部难度"]),
+      h("option",{value:"1"},["低"]),h("option",{value:"2"},["中"]),h("option",{value:"3"},["高"])]);
+    function applyFilter(){
+      var tv=typeSel.value, mv=modSel.value, dv=diffSel.value;
+      var list=view.querySelector("#rvList"); if(!list) return;
+      var items=pendingQ.map(function(q){ return {kind:"q",obj:q}; })
+        .concat(pendingC.map(function(c){ return {kind:"c",obj:c}; }));
+      items=items.filter(function(it){
+        var o2=it.obj;
+        if(mv && o2.module_id!==mv) return false;
+        if(dv && String(o2.difficulty)!==dv) return false;
+        if(tv){
+          if(it.kind==="q" && o2.type!==tv) return false;
+          if(it.kind==="c" && ("案例·"+o2.type)!==tv) return false;
+        }
+        return true;
+      });
+      list.innerHTML="";
+      if(!items.length){ list.appendChild(h("div",{class:"empty"},["无匹配待审项"])); return; }
+      items.forEach(function(it){ list.appendChild(reviewRow(it.kind, it.obj)); });
+    }
+    typeSel.onchange=applyFilter; modSel.onchange=applyFilter; diffSel.onchange=applyFilter;
+    view.appendChild(h("div",{class:"filters"},[typeSel, modSel, diffSel]));
+
+    var list=h("div",{id:"rvList"});
+    view.appendChild(list);
+    applyFilter();
+  }
+
+  function reviewRow(kind, obj){
+    var id = kind==="q"? obj.question_id : obj.case_id;
+    var typeLabel = kind==="q"? obj.type : ("案例·"+obj.type);
+    var row=h("div",{class:"kp"});
+    row.appendChild(h("div",{class:"hd"},[
+      h("span",{class:"id"},[id]),
+      h("span",{class:"tt"},[kind==="q"? (obj.question||"").slice(0,40) : (obj.title||"").slice(0,40)]),
+      h("span",{class:"tag"},[typeLabel]),
+      h("span",{class:"tag"},[modName[obj.module_id]||obj.module_id]),
+      diffDots(obj.difficulty||1),
+      statusPill(obj.review_status)
+    ]));
+    row.appendChild(h("div",{class:"sm"},["知识点："+(kpTitle[obj.kp_id]||obj.kp_id)]));
+    var detail=h("div",{class:"detail"});
+    if(kind==="q"){
+      detail.appendChild(h("div",{class:"small"},["题干："+esc(obj.question||"")]));
+      if(obj.options) obj.options.forEach(function(op,idx){ detail.appendChild(h("div",{class:"small"},[String.fromCharCode(65+idx)+". "+esc(op)])); });
+      detail.appendChild(h("div",{class:"small"},["答案："+esc(obj.answer)]));
+      if(obj.explanation) detail.appendChild(h("div",{class:"exp"},["解析："+esc(obj.explanation)]));
+      if(obj.source_refs) detail.appendChild(h("div",{class:"small muted"},["来源："+esc(Array.isArray(obj.source_refs)?obj.source_refs.join(", "):obj.source_refs)]));
+    } else {
+      if(obj.description) detail.appendChild(h("div",{class:"small"},["描述："+esc(obj.description)]));
+      if(obj.question) detail.appendChild(h("div",{class:"small"},["问题："+esc(obj.question)]));
+      if(obj.answer||obj.outcome) detail.appendChild(h("div",{class:"exp"},["参考："+esc(obj.answer||obj.outcome)]));
+    }
+    var okBtn=h("button",{class:"btn sm", onclick:function(){ decide(kind,id,"approved"); }},["标记通过"]);
+    var rejBtn=h("button",{class:"btn sm ghost", onclick:function(){ var n=prompt("退回理由（可选）："); decide(kind,id,"rejected", n||""); }},["退回修改"]);
+    detail.appendChild(h("div",{class:"row",style:"margin-top:10px"},[okBtn, rejBtn]));
+    row.appendChild(detail);
+    row.onclick=function(e){ if(e.target.tagName!=="BUTTON") row.classList.toggle("open"); };
+    return row;
+  }
+
+  function decide(kind, id, status, note){
+    var o=loadOverlay();
+    var now=new Date().toISOString().slice(0,19);
+    if(kind==="q") o.questions[id]={status:status, note:note||"", decided_at:now};
+    else o.cases[id]={status:status, note:note||"", decided_at:now};
+    saveOverlay(o);
+    renderReview();
+  }
+
+  function exportOverlay(){
+    var o=loadOverlay();
+    o.version="1.0"; o.generated_at=new Date().toISOString(); o.reviewer="teacher";
+    var blob="data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(o,null,2));
+    var a=document.createElement("a"); a.href=blob; a.download="review_overlay.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    alert("已导出复核结果 review_overlay.json。请在本机运行：\npython tools/apply_review.py --overlay review_overlay.json");
+  }
+
+  // ---------- 智能助教 (Phase 6 RAG) ----------
+  function renderAgent(){
+    if(!window.RAG){ view.innerHTML='<div class="card empty">RAG 模块未加载（rag-client.js）。</div>'; return; }
+    view.innerHTML="";
+    var agents=RAG.AGENTS;
+    var sel=h("select",{id:"agSel"}, Object.keys(agents).map(function(a){
+      return h("option",{value:a, selected:(a==="teacher-agent")},[agents[a].name+"（"+a+"）"]);
+    }));
+    var qInput=h("input",{id:"agQ", type:"text", placeholder:"输入问题，如：运输收入什么时候确认？或指定 KP3-001"});
+    var kpInput=h("input",{id:"agKp", type:"text", placeholder:"知识点过滤(可选) KP3-001", style:"max-width:170px"});
+    var stInput=h("input",{id:"agSt", type:"text", placeholder:"学号(分析用,可选)", style:"max-width:150px"});
+    var btn=h("button",{class:"btn", onclick:function(){ runAgent(); }},["咨询"]);
+    var filters=h("div",{class:"filters"},[sel, qInput, kpInput, stInput, btn]);
+    var intro=h("div",{class:"callout", style:"margin-bottom:14px"},[
+      h("b",{},["智能助教 · "]), "8 个教学 Agent 基于本地知识库（知识文档+知识点+案例+题库）离线检索作答。",
+      h("br",{}), "来源可追溯；未审核内容（G类/待审）会显著标注，须教师复核后方可纳入正式教学。"
+    ]);
+    var res=h("div",{id:"agRes"});
+    view.appendChild(h("div",{class:"card"},[filters, intro, res]));
+
+    function runAgent(){
+      var agent=sel.value, q=qInput.value.trim();
+      if(!q){ res.innerHTML='<div class="empty">请输入问题。</div>'; return; }
+      var f={}; var kp=kpInput.value.trim().toUpperCase(); if(kp) f.kp_id=kp;
+      var st=stInput.value.trim();
+      var retrieved=RAG.retrieve(q, {agent:agent, filters:f, top_k:5});
+      var out=RAG.answer(agent, q, retrieved, st||null);
+      renderOut(out, res);
+    }
+  }
+
+  function renderOut(o, box){
+    box.innerHTML="";
+    box.appendChild(h("div",{class:"row", style:"margin-bottom:8px"},[
+      h("span",{class:"pill blue"},[o.agent_name]),
+      h("span",{class:"muted small"},["查询："+o.query])
+    ]));
+    box.appendChild(h("div",{class:"exp", style:"white-space:pre-wrap;font-size:14.5px;line-height:1.7"},[o.answer]));
+    if(o.warnings && o.warnings.length){
+      var w=o.warnings.map(function(x){ return h("li",{class:"small"},["待复核："+x]); });
+      box.appendChild(h("div",{class:"callout", style:"margin-top:12px"},[h("b",{},["待复核提醒"]), h("ul",{},w)]));
+    }
+    if(o.citations && o.citations.length){
+      var cit=o.citations.map(function(c){
+        var kp=(c.kp_id||[]).join(",")||"-";
+        var tag=c.review_status==="pending"?h("span",{class:"tag pending"},["待审"]):"";
+        return h("li",{class:"small"},[c.chunk_id+" · 来源"+c.source+" · "+c.type+" · KP:"+kp+" ", tag, " — "+c.title]);
+      });
+      box.appendChild(h("div",{class:"card", style:"margin-top:12px;background:#f8fbff"},[
+        h("div",{class:"muted small"},["引用来源（"+o.citations.length+"）"]), h("ul",{},cit)]));
+    }
+    if(o.suggested_next && o.suggested_next.length){
+      var sg=o.suggested_next.map(function(x){ return h("li",{class:"small"},["→ "+x]); });
+      box.appendChild(h("div",{class:"muted", style:"margin-top:10px"},[h("div",{class:"small"},["建议下一步："]), h("ul",{},sg)]));
+    }
+  }
+
+  // ---------- icons (inline svg path) ----------
+  function iconBook(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h5v18H6a2 2 0 0 1-2-2z"/><path d="M20 5a2 2 0 0 0-2-2h-5v18h5a2 2 0 0 0 2-2z"/></svg>'); }
+  function iconGraph(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l8 0M7 8l4 8M17 9l-4 7"/></svg>'); }
+  function iconQuiz(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="4" y="4" width="16" height="16" rx="3"/></svg>'); }
+  function iconDash(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><rect x="4" y="4" width="7" height="10" rx="1"/><rect x="13" y="4" width="7" height="6" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/><rect x="4" y="17" width="7" height="3" rx="1"/></svg>'); }
+  function iconWarn(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e08a00" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>'); }
+  function iconBulb(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 4 10c-1 1-1 2-1 3H9c0-1 0-2-1-3A6 6 0 0 1 12 3z"/></svg>'); }
+  function iconUser(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>'); }
+
+  // ---------- router ----------
+  var tabs={overview:renderOverview, kg:renderKG, quiz:renderQuiz, dash:renderDash, review:renderReview, agent:renderAgent};
+  function go(tab){
+    document.querySelectorAll("#nav button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-tab")===tab); });
+    (tabs[tab]||renderOverview)();
+    window.scrollTo(0,0);
+  }
+  document.getElementById("nav").addEventListener("click", function(e){ if(e.target.getAttribute("data-tab")) go(e.target.getAttribute("data-tab")); });
+  go("overview");
+})();
+</script>
+</body>
+</html>
