@@ -1,0 +1,14 @@
+{
+  "name": "民用航空运输企业会计 · 智能教学平台",
+  "short_name": "CA会计智能教学",
+  "description": "知识图谱驱动的民航会计智能课程系统（离线可用）",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f7fb",
+  "theme_color": "#1b6ec2",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
