@@ -4,29 +4,18 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>民用航空运输企业会计 · 智能教学平台</title>
+<meta name="theme-color" content="#1b6ec2" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon.svg" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
 <style>
   :root{
-    --bg:#f4f7fb; --card:#ffffff; --ink:#1f2329; --muted:#5a6573;
-    --primary:#2f6fed; --primary-d:#1d4fc4; --accent:#0fb5ba;
+    --bg:#eef3fa; --card:#ffffff; --ink:#1f2d3d; --muted:#6b7a90;
+    --primary:#1b6ec2; --primary-d:#155a9e; --accent:#0fb5ba;
     --ok:#1f9d55; --warn:#e08a00; --danger:#d64545; --line:#e3e9f2;
-    --chip:#eef3ff; --radius:14px; --shadow:0 2px 10px rgba(31,45,61,.06);
+    --chip:#eaf2fc; --radius:14px; --shadow:0 2px 10px rgba(31,45,61,.06);
   }
   *{box-sizing:border-box}
-  .learn-path{margin-top:16px}
-  .lp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .lp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  @media(max-width:640px){.lp-grid{grid-template-columns:1fr}}
-  .lp-item{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer;transition:.15s}
-  .lp-item:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(47,111,237,.12);transform:translateY(-1px)}
-  .lp-id{flex:0 0 auto;font-size:12px;font-weight:800;color:#fff;background:var(--primary);padding:3px 8px;border-radius:8px;min-width:42px;text-align:center}
-  .lp-body{flex:1 1 auto;min-width:0}
-  .lp-name{font-size:14px;font-weight:700;color:var(--ink)}
-  .lp-meta{font-size:12px;color:var(--muted);margin-top:2px}
-  .lp-desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
-  .lp-acts{display:flex;gap:6px;margin-top:8px}
-  .lp-acts button{flex:0 0 auto;font-size:12px;padding:5px 12px;border:none;border-radius:8px;cursor:pointer;font-weight:600}
-  .lp-acts .go-kg{background:var(--chip);color:var(--primary-d)}
-  .lp-acts .go-quiz{background:var(--primary);color:#fff}
   html,body{margin:0;padding:0}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
@@ -135,6 +124,39 @@
     .stat .n{font-size:22px}
     header.top h1{font-size:18px}
   }
+  .overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px}
+  .course-switch{display:flex;gap:8px;margin-top:10px}
+  .cs-btn{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;
+    padding:6px 16px;border-radius:20px;cursor:pointer;min-height:36px}
+  .cs-btn.active{background:#fff;color:var(--primary)}
+  .flow{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .flow-step{flex:1;min-width:150px;background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .flow-arrow{display:flex;align-items:center;font-size:20px;color:var(--primary);font-weight:700}
+  .ans-key{font-size:13.5px;line-height:1.5}
+  /* 课程大纲 */
+  .ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px}
+  .ch-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow)}
+  .ch-card h4{margin:0 0 8px;font-size:15px;color:var(--primary)}
+  .ch-card .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .ch-card .badge{font-size:11px;padding:2px 9px;border-radius:20px;background:var(--chip);color:var(--primary);font-weight:600}
+  .ch-card .badge.core{background:#fde8e8;color:var(--danger)}
+  .ch-card .lbl{font-weight:700;color:var(--ink);font-size:12.5px;margin-top:9px;display:block}
+  .ch-card ul{margin:5px 0 0;padding-left:18px;font-size:13px;line-height:1.5}
+  .h3{font-size:14.5px;font-weight:700;margin:15px 0 6px;color:var(--primary-d)}
+  .code{background:#0f172a;color:#e2e8f0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+    line-height:1.5;padding:12px 14px;border-radius:10px;white-space:pre-wrap;overflow:auto}
+  .syl-note{font-size:13px;line-height:1.6}
+  .modal{background:#fff;border-radius:14px;max-width:600px;width:100%;max-height:82vh;  overflow:auto;padding:18px 20px;box-shadow:0 14px 44px rgba(0,0,0,.22)}
+  @media print{
+    nav.tabs, .footer, .btn, button, input, select{display:none !important}
+    body{background:#fff}
+    header.top{background:#fff;color:#1f2d3d;box-shadow:none}
+    header.top .ver{display:none}
+    .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+    .grid{display:block}
+    .grid .card{margin-bottom:10px}
+    .callout{background:#f4f7fb;border:1px solid #ddd}
+  }
 </style>
 </head>
 <body>
@@ -143,13 +165,22 @@
     <h1 id="appTitle">民用航空运输企业会计 · 智能教学平台</h1>
     <div class="sub" id="appSub">知识图谱驱动的智能课程系统</div>
     <div class="ver" id="appVer">Phase 7 · 部署上线</div>
+    <div class="course-switch" id="courseSwitch"></div>
   </div>
 </header>
 
 <nav class="tabs wrap" id="nav">
   <button data-tab="overview" class="active">概览</button>
+  <button data-tab="syllabus">课程大纲</button>
   <button data-tab="kg">知识图谱</button>
   <button data-tab="quiz">练习中心</button>
+  <button data-tab="mistakes">错题本</button>
+  <button data-tab="daily">每日一题</button>
+  <button data-tab="roadmap">学习路线</button>
+  <button data-tab="paper">试卷中心</button>
+  <button data-tab="autoexam">智能评阅</button>
+  <button data-tab="grade">成绩报表</button>
+  <button data-tab="mine">我的</button>
   <button data-tab="dash">教师驾驶舱</button>
   <button data-tab="review">复核中心</button>
   <button data-tab="agent">智能助教</button>
@@ -158,17 +189,43 @@
 <main class="wrap" id="view"></main>
 
 <footer class="footer">
-  数据本地离线运行 · 全部内容以教师复核（reviewed）为准 · AI 生成内容标记为待审（pending）
+  数据本地离线运行 · 全部内容以教师复核（reviewed）为准 · AI 生成内容标记为待审（pending）<br />
+  可「添加到主屏幕」离线使用；学习进度仅存本机浏览器，建议定期在「我的」导出学习报告。
 </footer>
 
 <script src="data.bundle.js"></script>
 <script src="rag-client.js"></script>
+<script src="logistics-syllabus.js"></script>
+<script src="la-data.js"></script>
 <script>
 (function(){
   "use strict";
-  var D = window.APP_DATA;
+  var COURSE = (localStorage.getItem("CA_COURSE") || "CA");
+  var D = (COURSE === "LA" && window.LA_DATA) ? window.LA_DATA : window.APP_DATA;
   var view = document.getElementById("view");
   if(!D){ view.innerHTML = '<div class="card empty">未加载数据（data.bundle.js）。请确认本文件与 data.bundle.js 在同一目录。</div>'; return; }
+
+  // ---------- course switch (CA / LA) ----------
+  function applyCourseMeta(){
+    if(COURSE==="LA"){
+      // 封面统一：只用一个课程名"民用航空运输企业会计"，当前所选课程由"民航会计/物流会计"切换按钮体现
+      document.getElementById("appTitle").textContent="民用航空运输企业会计 · 智能教学平台";
+      document.getElementById("appSub").textContent="智能体功能闭环：题库 → 组卷 → 自动评阅 → 成绩";
+      document.getElementById("appVer").textContent="智能教学闭环 v2 · 双课程（民航 / 物流）";
+    }
+  }
+  function renderCourseSwitch(){
+    var box=document.getElementById("courseSwitch"); if(!box) return;
+    box.innerHTML="";
+    [["CA","民航会计"],["LA","物流会计"]].forEach(function(c){
+      var b=h("button",{class:"cs-btn"+(COURSE===c[0]?" active":""), onclick:function(){
+        if(COURSE===c[0]) return;
+        localStorage.setItem("CA_COURSE",c[0]); location.reload();
+      }},[c[1]]);
+      box.appendChild(b);
+    });
+  }
+  applyCourseMeta(); renderCourseSwitch();
 
   // ---------- helpers ----------
   function h(tag, attrs, kids){
@@ -183,12 +240,123 @@
   function diffDots(n){ var s=""; for(var i=1;i<=3;i++) s+='<span class="dot'+(i<=n?" on":"")+'"></span>'; return '<span class="diff">'+s+'</span>'; }
   function statusPill(st){ if(st==="reviewed") return '<span class="pill ok">已审</span>'; if(st==="pending") return '<span class="pill warn">AI待审</span>'; return '<span class="pill draft">'+esc(st||"draft")+'</span>'; }
 
-  var KPS = D.knowledge_points, MODS = D.modules, QS = D.questions, CS = D.cases, EDGES = D.edges;
+  var KPS = D.knowledge_points || [], MODS = D.modules || [], QS = D.questions || [], CS = D.cases || [], EDGES = D.edges || [];
   var modName = {}; MODS.forEach(function(m){ modName[m.module_id]=m.name; });
   var kpTitle = {}; KPS.forEach(function(k){ kpTitle[k.kp_id]=k.title; });
   // edge adjacency
   var adj = {}; KPS.forEach(function(k){ adj[k.kp_id]=[]; });
   EDGES.forEach(function(e){ if(adj[e.from]) adj[e.from].push(e); });
+
+  // ---------- 个人学习存储 (localStorage, 离线) ----------
+  var STORE_KEY = "ca_student_store_v1";
+  function loadStore(){
+    try { var raw = localStorage.getItem(STORE_KEY); if(raw){ var s = JSON.parse(raw); if(s && typeof s==="object") return s; } } catch(e){}
+    return null;
+  }
+  var STORE = loadStore() || { start:"", checkins:[], mistakes:[], roadmap:{}, daily:{}, profile:{name:"",sid:""}, server:"" };
+  function saveStore(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(STORE)); } catch(e){} }
+  // Phase 9: 上报本机进度到后端
+  function doReport(name, sid, server){
+    if(!server){ alert("请先填写「上报服务器地址」"); return; }
+    if(!name){ alert("请先填写「姓名/昵称」"); return; }
+    STORE.profile = {name:(name||"").trim(), sid:(sid||"").trim()};
+    STORE.server = (server||"").trim().replace(/\/$/,"");
+    saveStore();
+    var base = STORE.server;
+    fetch(base + "/api/report", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(STORE)
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if(j && j.ok){ alert("✅ 上报成功：" + (j.name||name) + "（已更新）"); }
+      else { alert("上报失败：" + ((j&&j.error)||"未知错误")); }
+    }).catch(function(e){ alert("上报失败（网络/跨域）：" + e); });
+  }
+  // Phase 9: 教师端拉取实时看板
+  function fetchLive(base){
+    base=(base||"").trim().replace(/\/$/,"");
+    if(!base){ alert("请填写后端服务器地址"); return; }
+    fetch(base + "/api/class").then(function(r){ return r.json(); }).then(function(j){
+      if(j && j.students){ renderLiveDash(j.students, base); }
+      else { alert("拉取失败：" + ((j&&j.error)||"无数据")); }
+    }).catch(function(e){ alert("拉取失败（网络/跨域）：" + e); });
+  }
+  function renderLiveDash(students, base){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconDash(),"教师驾驶舱 · 实时看板"]));
+    view.appendChild(h("div",{class:"callout"},["数据源：" + base + " · 共 " + students.length + " 位学生已上报 · 数据为各学生本机进度快照"]));
+    var tc=0,tm=0,tma=0,tr=0;
+    students.forEach(function(s){ tc+=s.stats.checkin_days; tm+=s.stats.mistakes; tma+=s.stats.mastered; tr+=s.stats.roadmap_done; });
+    var grid=h("div",{class:"dash-grid"});
+    [["已上报学生",students.length],["累计打卡(人次)",tc],["累计错题",tm],["已掌握",tma],["路线图完成(人次)",tr]]
+      .forEach(function(p){ grid.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])])); });
+    view.appendChild(h("div",{class:"card"},[grid]));
+    var list=h("div",{class:"card",style:"margin-top:14px"});
+    list.appendChild(h("h2",{class:"sec"},["学生明细"]));
+    var tbl=h("table",{class:"t"});
+    tbl.appendChild(h("tr",[h("th",["姓名"]),h("th",["学号"]),h("th",["班级"]),h("th",["打卡"]),h("th",["错题"]),h("th",["已掌握"]),h("th",["路线图"]),h("th",["最近活跃"]),h("th",["操作"])]));
+    students.forEach(function(s){
+      var tr2=h("tr");
+      tr2.appendChild(h("td",[s.name])); tr2.appendChild(h("td",[s.sid]));
+      tr2.appendChild(h("td",[s.class])); tr2.appendChild(h("td",[String(s.stats.checkin_days)]));
+      tr2.appendChild(h("td",[String(s.stats.mistakes)])); tr2.appendChild(h("td",[String(s.stats.mastered)]));
+      tr2.appendChild(h("td",[String(s.stats.roadmap_done)])); tr2.appendChild(h("td",[s.stats.last_active||"—"]));
+      tr2.appendChild(h("td",[h("button",{class:"btn sm", onclick:function(){ showStudentDetail(s); }},["查看"])]));
+      tbl.appendChild(tr2);
+    });
+    list.appendChild(tbl);
+    view.appendChild(list);
+  }
+  function showStudentDetail(s){
+    var r=s.raw||{}, rm=r.roadmap||{}, done=0;
+    MODS.forEach(function(m){ var v=rm[m.module_id]; if((v&&typeof v==="object"&&v.done)||v==="done") done++; });
+    var box=h("div");
+    box.appendChild(h("h3",{class:"sec",style:"margin-top:0"},["学生详情 · " + s.name + "（" + s.sid + "）"]));
+    box.appendChild(h("div",{class:"small muted"},["班级：" + (s.class||"—") + " · 路线图完成 " + done + "/" + MODS.length + " · 最近活跃 " + (s.stats.last_active||"—")]));
+    var ms=r.mistakes||[];
+    box.appendChild(h("div",{class:"small muted",style:"margin-top:8px"},["错题 " + ms.length + " 条（近 30）"]));
+    var ul=h("ul",{class:"kpis"});
+    ms.slice(0,30).forEach(function(m){
+      var q=byId(QS,"question_id",m.qid)||{};
+      ul.appendChild(h("li",[(m.master?"✅ ":"❌ ") + ((q.stem||m.qid)||"").slice(0,60) + "（" + (kpTitle[m.kp]||m.kp||"") + "）"]));
+    });
+    box.appendChild(ul);
+    if(ms.length>30) box.appendChild(h("div",{class:"small muted"},["… 其余 " + (ms.length-30) + " 条"]));
+    openModal(box);
+  }
+  function openModal(node){
+    var ov=h("div",{class:"overlay"});
+    var box=h("div",{class:"modal"});
+    box.appendChild(node);
+    box.appendChild(h("div",{class:"row",style:"margin-top:14px"},[h("button",{class:"btn",onclick:function(){ ov.remove(); }},["关闭"])]));
+    ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+  }
+  function todayStr(){ var d=new Date(); var m=("0"+(d.getMonth()+1)).slice(-2); var day=("0"+d.getDate()).slice(-2); return d.getFullYear()+"-"+m+"-"+day; }
+  function dateAdd(dstr, n){ var d=new Date(dstr+"T00:00:00"); d.setDate(d.getDate()+n); var m=("0"+(d.getMonth()+1)).slice(-2); var day=("0"+d.getDate()).slice(-2); return d.getFullYear()+"-"+m+"-"+day; }
+  // 错题本按课程隔离：旧数据无 course 字段，统一按 CA 处理，保证平滑升级
+  function mCourse(m){ return m.course || "CA"; }
+  function hasMistake(qid){ for(var i=0;i<STORE.mistakes.length;i++){ var m=STORE.mistakes[i]; if(m.qid===qid && mCourse(m)===COURSE && !m.master) return true; } return false; }
+  function addMistake(qid, reason){
+    if(hasMistake(qid)) return false;
+    var q=byId(QS,"question_id",qid);
+    STORE.mistakes.push({id:"m"+Date.now(), qid:qid, course:COURSE, kp:(q?q.kp_id:""), title:((q?q.stem:"")||"").slice(0,40), reason:(reason||""), added:todayStr(), master:false, reps:0, last:todayStr(), due:todayStr()});
+    saveStore(); return true;
+  }
+  function markCheckin(min, topic){
+    var t=todayStr(); var ex=null;
+    for(var i=0;i<STORE.checkins.length;i++){ if(STORE.checkins[i].date===t){ ex=STORE.checkins[i]; break; } }
+    if(ex){ if(min) ex.min=Math.max(ex.min||0, min); if(topic) ex.topic=topic; }
+    else STORE.checkins.push({date:t, min:min||0, topic:topic||""});
+    saveStore();
+  }
+  var REVIEW_INTERVALS = [1,2,4,7,15];
+  function dueMistakes(){
+    var t=todayStr(); var out=[];
+    for(var i=0;i<STORE.mistakes.length;i++){ var m=STORE.mistakes[i]; if(!m.master && mCourse(m)===COURSE && m.due<=t) out.push(m); }
+    return out;
+  }
 
   // ---------- charts (inline SVG) ----------
   function donut(data, colors, size){
@@ -243,6 +411,7 @@
 
   // ---------- TAB: overview ----------
   function renderOverview(){
+    if(COURSE==="LA"){ renderOverviewLA(); return; }
     var s=D.meta.stats, c=D.course;
     var cards=[
       {n:c.total_hours, l:"总学时", s:'理论 '+c.theory_hours+' / 实验 '+c.lab_hours},
@@ -286,28 +455,66 @@
     charts.appendChild(donutCard);
     charts.appendChild(h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["题型分布"]), h("div",{html:hbars(typeRows,"#1b6ec2")})]));
     view.appendChild(charts);
-    // 课程学习路径（对标会小导·学习中心「四课次学习地图」）
-    var lpCard=h("div",{class:"card learn-path"},[
-      h("div",{class:"lp-head"},[h("h2",{class:"sec"},[iconGraph(),"课程学习路径"]), h("span",{class:"muted",style:"font-size:12px"},["点击模块进入图谱 / 练习"])])
-    ]);
-    var lpGrid=h("div",{class:"lp-grid"});
-    MODS.slice().sort(function(a,b){ return a.module_id<b.module_id?-1:1; }).forEach(function(m){
-      var acts=h("div",{class:"lp-acts"});
-      acts.appendChild(h("button",{class:"go-kg",onclick:function(e){e.stopPropagation();kgState.mod=m.module_id;go("kg");}},[ "看图谱" ]));
-      acts.appendChild(h("button",{class:"go-quiz",onclick:function(e){e.stopPropagation();go("quiz");}},[ "做练习" ]));
-      var body=[ h("div",{class:"lp-name"},[m.module_id+" "+m.name]) ];
-      if(m.hours) body.push(h("div",{class:"lp-meta"},["学时 "+m.hours]));
-      if(m.description) body.push(h("div",{class:"lp-desc"},[m.description]));
-      body.push(acts);
-      lpGrid.appendChild(h("div",{class:"lp-item",onclick:function(){kgState.mod=m.module_id;go("kg");}},[ h("div",{class:"lp-id"},[m.module_id]), h("div",{class:"lp-body"},body) ]));
+  }
+
+  function renderOverviewLA(){
+    view.innerHTML="";
+    var idx=(window.LA_DATA&&window.LA_DATA.index)||{};
+    var cards=[
+      {n:idx.total||195, l:"题库题目", s:"教师编著 · 全部已审"},
+      {n:idx.kp_count||56, l:"知识点", s:"唯一编码体系 LA-xx-Kxx"},
+      {n:Object.keys(idx.by_chapter||{}).length||9, l:"章节", s:"本科 48 学时"},
+      {n:"7", l:"题型", s:"单选/多选/判断/名解/思/计算/案例"},
+      {n:"51", l:"含分步 rubric", s:"主观题可自动分步给分"},
+      {n:"3", l:"组卷模板", s:"平时/期中/期末"}
+    ];
+    var grid=h("div",{class:"grid g3"});
+    cards.forEach(function(cd){ grid.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(cd.n)]),h("div",{class:"l"},[cd.l]),h("div",{class:"s"},[h("span",{class:"muted"},[cd.s])])])); });
+    view.appendChild(h("h2",{class:"sec"},[iconBook(),"课程概览 · 物流企业会计"]));
+    view.appendChild(grid);
+    // 闭环流程图
+    var flow=h("div",{class:"card",style:"margin-bottom:14px"});
+    flow.appendChild(h("h2",{class:"sec"},["智能体功能闭环"]));
+    var steps=[["① 题库（数据层）","195 题 / 56 知识点编码"],["② 试卷组合","按规则自动组卷（平时/期中/期末）"],["③ 自动评阅","客观题自动判分 · 主观题分步给分"],["④ 成绩生成","平时30% + 期中20% + 期末50% 汇总报表"]];
+    var fl=h("div",{class:"flow"});
+    steps.forEach(function(s,i){ fl.appendChild(h("div",{class:"flow-step"},[h("div",{style:"font-weight:700"},[s[0]]),h("div",{class:"small muted"},[s[1]])])); if(i<steps.length-1) fl.appendChild(h("div",{class:"flow-arrow"},["→"])); });
+    flow.appendChild(fl);
+    flow.appendChild(h("div",{class:"small muted",style:"margin-top:10px"},["后续扩展：题库扩充至每章 50+ 题 · 学生端错题本/知识点闯关/模拟考试 · 教师端班级成绩热力图与教学改进建议。"]));
+    view.appendChild(flow);
+    // 章节题量
+    var byCh=idx.by_chapter||{};
+    var rows=Object.keys(byCh).sort(function(a,b){return a-b;}).map(function(c){ return {k:"第"+c+"章", v:byCh[c]}; });
+    view.appendChild(h("div",{class:"card chart-card"},[h("h2",{class:"sec"},["各章题量分布"]), h("div",{html:hbars(rows,"#0fb5ba")})]));
+  }
+
+  function renderKGLA(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconGraph(),"知识点体系（按章）"]));
+    view.appendChild(h("div",{class:"small muted",style:"margin-bottom:10px"},["共 "+KPS.length+" 个知识点，采用唯一编码 LA-章-序号（如 LA-01-K01）。点击卡片可查看关联题目。"]));
+    // group by chapter
+    var byCh={};
+    KPS.forEach(function(k){ (byCh[k.chapter]=byCh[k.chapter]||[]).push(k); });
+    var chMeta={}; (D.chapters||[]).forEach(function(c){ chMeta[c.chapter]=c; });
+    Object.keys(byCh).sort(function(a,b){return a-b;}).forEach(function(ch){
+      var c=chMeta[ch]||{};
+      view.appendChild(h("h2",{class:"sec",style:"margin-top:14px"},["第"+ch+"章 · "+(c.title||"")+(c.hours?("（"+c.hours+"学时）"):"")]));
+      var g=h("div",{class:"grid g2"});
+      byCh[ch].forEach(function(k){
+        var relQ=QS.filter(function(q){return q.kp_id===k.kp_id;}).length;
+        var card=h("div",{class:"kp", onclick:function(){ card.classList.toggle("open"); }});
+        card.appendChild(h("div",{class:"hd"},[h("span",{class:"id"},[k.kp_id]), h("span",{class:"tt"},[k.title])]));
+        card.appendChild(h("div",{class:"sm"},["关联题目 "+relQ+" 道"]));
+        card.appendChild(h("div",{class:"detail",style:"display:none"},[h("div",{class:"small muted"},["在「练习中心 / 试卷中心」按该知识点练习。"])]));
+        g.appendChild(card);
+      });
+      view.appendChild(g);
     });
-    lpCard.appendChild(lpGrid);
-    view.appendChild(lpCard);
   }
 
   // ---------- TAB: knowledge graph ----------
   var kgState={layer:"",mod:"",status:"",q:""};
   function renderKG(){
+    if(COURSE==="LA"){ renderKGLA(); return; }
     view.innerHTML="";
     view.appendChild(h("h2",{class:"sec"},[iconGraph(),"知识图谱浏览"]));
     // filters
@@ -474,7 +681,7 @@
       if(q.explanation) ansBox.appendChild(h("div",{style:"margin-top:6px"},["解析："+q.explanation]));
       ansBox.style.display="";
       var nav=h("div",{class:"row",style:"margin-top:12px"});
-      if(!correct) nav.appendChild(h("span",{class:"adv"},["⚠ 建议把这题加入错题本"]));
+      if(!correct) nav.appendChild(h("button",{class:"btn sm", style:"margin-right:8px", onclick:function(){ if(addMistake(q.question_id,"")) alert("已加入错题本"); else alert("已在错题本中"); }},["加入错题本"]));
       nav.appendChild(h("span",{class:"small"},[correct?"✅ 答对":"❌ 答错"]));
       nav.appendChild(h("button",{class:"btn",onclick:next},[quiz.idx>=quiz.items.length-1?"查看结果":"下一题"]));
       ansBox.appendChild(nav);
@@ -489,7 +696,7 @@
     var opts=[];
     if(objective){
       var keys, labels;
-      if(q.type==="judge"){ keys=["对","错"]; }
+      if(q.type==="judge"){ keys=(COURSE==="LA") ? (q.options||["正确","错误"]) : ["对","错"]; }
       else { keys=q.options.slice(); }
       keys.forEach(function(key){
         var o=h("button",{class:"opt"});
@@ -522,7 +729,11 @@
     wrap.appendChild(subBtn);
     box.innerHTML=""; box.appendChild(wrap);
   }
-  function isCorrectKey(q,key){ if(q.type==="judge") return (key==="对"&&q.answer===true)||(key==="错"&&q.answer===false); return key===q.answer; }
+  function judgeCorrectLabel(q){
+    if(COURSE==="LA"){ return q.answer==="A" ? (q.options&&q.options[0]) : (q.options&&q.options[1]); }
+    return q.answer===true ? "对" : "错";
+  }
+  function isCorrectKey(q,key){ if(q.type==="judge") return key===judgeCorrectLabel(q); return key===q.answer; }
   function judge(q,sel){
     if(q.type==="single"||q.type==="judge"){ for(var k in sel) if(sel[k]) return isCorrectKey(q,k); return false; }
     if(q.type==="multiple"){ var ans=Array.isArray(q.answer)?q.answer:[q.answer]; var set=Object.keys(sel).filter(function(k){return sel[k];});
@@ -558,8 +769,20 @@
   var currentStudent = "S2026001";
   var currentClass = "全部";
   function renderDash(){
+    if(COURSE==="LA"){ return renderDashLA(); }   // LA 无 teacher_dashboard，走专用看板（热力图+建议）
     view.innerHTML="";
     view.appendChild(h("h2",{class:"sec"},[iconDash(),"教师驾驶舱"]));
+
+    // Phase 9: 实时数据入口
+    var liveCard = h("div",{class:"card",style:"margin-bottom:14px"});
+    var liveAddr = h("input",{type:"text", value:(window.CA_LIVE_SERVER||""), placeholder:"后端服务器地址，如 https://host:8000", style:"min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:240px"});
+    liveCard.appendChild(h("div",{class:"row",style:"gap:10px;align-items:center;flex-wrap:wrap"},[
+      h("b",["实时看板"]),
+      liveAddr,
+      h("button",{class:"btn", onclick:function(){ window.CA_LIVE_SERVER=(liveAddr.value||"").trim().replace(/\/$/,""); fetchLive(liveAddr.value); }},["🔄 拉取实时看板"]),
+      h("span",{class:"small muted"},["默认显示内置演示数据"])
+    ]));
+    view.appendChild(liveCard);
 
     // class + student selectors (Phase 7: multi-class)
     var profs = D.student_profiles || {};
@@ -866,8 +1089,672 @@
   function iconBulb(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 4 10c-1 1-1 2-1 3H9c0-1 0-2-1-3A6 6 0 0 1 12 3z"/></svg>'); }
   function iconUser(){ return svg('width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1b6ec2" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>'); }
 
+  // ===== 学生侧学习闭环（teaching-agent-builder 融合） =====
+  function streakDays(){ var s=0; var d=todayStr(); var dates={}; STORE.checkins.forEach(function(c){ dates[c.date]=true; }); while(dates[d]){ s++; d=dateAdd(d,-1); } return s; }
+
+  // 通用单题面板：用于每日一题 / 错题本重练（复用 .opt/.exp/.quiz-q 样式）
+  function qPanel(q, opt){
+    opt = opt || {};
+    var wrap=h("div",{class:"qpanel", style:"margin-top:8px"});
+    wrap.appendChild(h("div",{class:"quiz-q"},[q.stem]));
+    var sel={}, optsArr=[], objective=["single","multiple","judge","entry","calc","case","comprehensive"].indexOf(q.type)>=0;
+    var optKeys=[];
+    if(q.options){ for(var k in q.options){ if(q.options.hasOwnProperty(k)) optKeys.push(k); } }
+    optKeys.sort();
+    if(!optKeys.length){
+      var ansBox0=h("div",{class:"exp", style:"display:none;margin-top:10px"});
+      wrap.appendChild(h("button",{class:"btn", onclick:function(){
+        ansBox0.style.display="block"; ansBox0.innerHTML="";
+        ansBox0.appendChild(h("div",{class:"muted small"},["参考答案："]));
+        ansBox0.appendChild(h("div",[q.answer||"—"]));
+        if(q.explanation) ansBox0.appendChild(h("div",{style:"margin-top:6px"},["解析："+q.explanation]));
+        markCheckin(5, q.kp_id);
+        if(opt.onResult) opt.onResult(true);
+      }},["查看答案 / 完成"]));
+      wrap.appendChild(ansBox0);
+      return wrap;
+    }
+    optKeys.forEach(function(key){
+      var o=h("button",{class:"opt"});
+      o.appendChild(h("span",{class:"tk"},[(q.type==="multiple"?"☐":"")]));
+      o.appendChild(document.createTextNode(key+". "+(q.options[key]||"")));
+      o.onclick=function(){
+        if(o.disabled) return;
+        if(q.type==="multiple"){ sel[key]=!sel[key]; o.classList.toggle("sel",!!sel[key]); var t=o.querySelector(".tk"); if(t) t.textContent=sel[key]?"☑":"☐"; }
+        else { for(var kk in sel) delete sel[kk]; sel[key]=true; optsArr.forEach(function(x){x.el.classList.remove("sel");}); o.classList.add("sel"); }
+      };
+      o._key=key; o.el=o; optsArr.push(o); wrap.appendChild(o);
+    });
+    var ansBox=h("div",{class:"exp", style:"display:none"}); wrap.appendChild(ansBox);
+    var subBtn=h("button",{class:"btn", style:"margin-top:10px", onclick:function(){ submitOne(); }},["提交答案"]);
+    wrap.appendChild(subBtn);
+    function isCorrectKey(qq,k){ var a=qq.answer; if(Array.isArray(a)) return a.indexOf(k)>=0; if(typeof a==="string"){ return a.split(/[,，;；]/).map(function(x){return x.trim();}).indexOf(k)>=0; } return false; }
+    function submitOne(){
+      var correct=true;
+      if(q.type==="multiple"){ var keys=optKeys.filter(function(k){return sel[k];}); var ca=Array.isArray(q.answer)?q.answer:((""+q.answer).split(/[,，;；]/).map(function(x){return x.trim();})); correct=(keys.length===ca.length)&&keys.every(function(k){return ca.indexOf(k)>=0;}); }
+      else if(objective){ var ans=Array.isArray(q.answer)?q.answer[0]:(""+q.answer).trim(); correct=!!sel[ans]; }
+      else correct=false;
+      optsArr.forEach(function(o){ var key=o._key; if(isCorrectKey(q,key)) o.classList.add("right"); else if(sel[key]) o.classList.add("wrong"); o.disabled=true; });
+      subBtn.disabled=true;
+      ansBox.style.display="block"; ansBox.innerHTML="";
+      if(objective){ ansBox.appendChild(h("div",["正确答案："+answerText(q)])); }
+      else { ansBox.appendChild(h("div",{class:"muted small"},["参考答案："])); ansBox.appendChild(h("div",[q.answer||"—"])); }
+      if(q.explanation) ansBox.appendChild(h("div",{style:"margin-top:6px"},["解析："+q.explanation]));
+      ansBox.appendChild(h("div",{class:"row", style:"margin-top:10px"},[h("span",{class:"small"},[correct?"✅ 答对":"❌ 答错"])]));
+      if(!correct){ ansBox.appendChild(h("button",{class:"btn sm", style:"margin-left:8px", onclick:function(){ if(addMistake(q.question_id,"")) alert("已加入错题本"); else alert("已在错题本中"); }},["加入错题本"])); }
+      markCheckin(5, q.kp_id);
+      if(opt.onResult) opt.onResult(correct);
+      setTimeout(function(){ ansBox.scrollIntoView({block:"center",behavior:"smooth"}); },50);
+    }
+    return wrap;
+  }
+
+  function renderRoadmapLA(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconGraph(),"学习路线图 · 物流会计"]));
+    var startWrap=h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"small muted"},["设置开课日期，系统按 9 章顺序推荐今日学习章节。数据仅存本机浏览器。"]),
+      (function(){ var inp=h("input",{id:"startDate", type:"date", value:(STORE.start||""), style:"margin-top:8px;display:block"}); inp.onchange=function(){ STORE.start=inp.value; saveStore(); renderRoadmapLA(); }; return inp; })()
+    ]);
+    view.appendChild(startWrap);
+    var chapters=(D.chapters||[]).slice().sort(function(a,b){return a.chapter-b.chapter;});
+    var qByCh={}; QS.forEach(function(q){ if(q.review_status==="approved") qByCh[q.chapter]=(qByCh[q.chapter]||0)+1; });
+    var todayIdx=-1;
+    if(STORE.start){ var diff=Math.floor((new Date(todayStr()+"T00:00:00")-new Date(STORE.start+"T00:00:00"))/86400000); if(diff>=0 && diff<chapters.length) todayIdx=diff; }
+    if(todayIdx>=0 && chapters[todayIdx]){ var tc=chapters[todayIdx]; view.appendChild(h("div",{class:"callout", style:"margin-bottom:14px"},[ h("b",["今日建议（第 "+(todayIdx+1)+" 天）："]), tc.title+" · "+tc.hours+" 学时", h("br"), "知识点 "+tc.kp_ids.length+" 个 · 已审题 "+(qByCh[tc.chapter]||0)+" 道" ])); }
+    var done=0; chapters.forEach(function(c){ if(STORE.roadmap["CH"+c.chapter]==="done") done++; });
+    var prog=h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"row", style:"justify-content:space-between"},[ h("b",["学习进度"]), h("span",{class:"small muted"},[done+" / "+chapters.length+" 章已学完"]) ]),
+      (function(){ var p=h("div",{class:"prog", style:"margin-top:8px"}); var b=h("i"); b.style.width=(done/chapters.length*100)+"%"; p.appendChild(b); return p; })()
+    ]);
+    view.appendChild(prog);
+    var grid=h("div",{class:"grid g2"});
+    chapters.forEach(function(c){
+      var rid="CH"+c.chapter; var st=STORE.roadmap[rid]||"";
+      var card=h("div",{class:"card", style:(st==="done"?"border-left:4px solid #1f9d55":st==="doing"?"border-left:4px solid #1b6ec2":"")});
+      card.appendChild(h("div",{class:"row", style:"justify-content:space-between"},[
+        h("div",{style:"font-weight:700"},["第"+c.chapter+"章 · "+c.title]),
+        h("span",{class:"pill "+(st==="done"?"ok":st==="doing"?"blue":"draft")},[st==="done"?"已学":st==="doing"?"学习中":"未学"])
+      ]));
+      card.appendChild(h("div",{class:"small muted"},[c.hours+" 学时 · 知识点 "+c.kp_ids.length+" · 已审题 "+(qByCh[c.chapter]||0)]));
+      var btns=h("div",{class:"row", style:"margin-top:8px;gap:6px"});
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ STORE.roadmap[rid]="doing"; saveStore(); renderRoadmapLA(); }},["学习中"]));
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ STORE.roadmap[rid]="done"; saveStore(); renderRoadmapLA(); }},["标记已学"]));
+      btns.appendChild(h("button",{class:"btn sm ghost", onclick:function(){ delete STORE.roadmap[rid]; saveStore(); renderRoadmapLA(); }},["重置"]));
+      card.appendChild(btns);
+      grid.appendChild(card);
+    });
+    view.appendChild(grid);
+  }
+
+  function renderRoadmap(){
+    if(COURSE==="LA"){ renderRoadmapLA(); return; }
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconGraph(),"学习路线图"]));
+    var startWrap=h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"small muted"},["设置开课日期，系统按 16 个模块顺序推荐今日学习模块。数据仅存本机浏览器。"]),
+      (function(){ var inp=h("input",{id:"startDate", type:"date", value:(STORE.start||""), style:"margin-top:8px;display:block"}); inp.onchange=function(){ STORE.start=inp.value; saveStore(); renderRoadmap(); }; return inp; })()
+    ]);
+    view.appendChild(startWrap);
+    var qByMod={}; MODS.forEach(function(m){ qByMod[m.module_id]=0; });
+    QS.forEach(function(q){ if(q.review_status==="approved" && qByMod.hasOwnProperty(q.module_id)) qByMod[q.module_id]++; });
+    var kpByMod={}; MODS.forEach(function(m){ kpByMod[m.module_id]=0; });
+    KPS.forEach(function(k){ if(kpByMod.hasOwnProperty(k.module_id)) kpByMod[k.module_id]++; });
+    var todayIdx=-1;
+    if(STORE.start){ var diff=Math.floor((new Date(todayStr()+"T00:00:00")-new Date(STORE.start+"T00:00:00"))/86400000); if(diff>=0 && diff<MODS.length) todayIdx=diff; }
+    if(todayIdx>=0){ var tm=MODS[todayIdx]; view.appendChild(h("div",{class:"callout", style:"margin-bottom:14px"},[ h("b",["今日建议（第 "+(todayIdx+1)+" 天）："]), tm.name+" · 理论"+tm.theory_hours+" / 实验"+tm.lab_hours+" 学时", h("br"), "学习目标："+tm.objectives.join("；") ])); }
+    var done=0; MODS.forEach(function(m){ if(STORE.roadmap[m.module_id]==="done") done++; });
+    var prog=h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"row", style:"justify-content:space-between"},[ h("b",["学习进度"]), h("span",{class:"small muted"},[done+" / "+MODS.length+" 模块已学完"]) ]),
+      (function(){ var p=h("div",{class:"prog", style:"margin-top:8px"}); var b=h("i"); b.style.width=(done/MODS.length*100)+"%"; p.appendChild(b); return p; })()
+    ]);
+    view.appendChild(prog);
+    var ms=MODS.slice().sort(function(a,b){return a.sequence-b.sequence;});
+    var grid=h("div",{class:"grid g2"});
+    ms.forEach(function(m){
+      var st=STORE.roadmap[m.module_id]||"";
+      var card=h("div",{class:"card", style:(st==="done"?"border-left:4px solid #1f9d55":st==="doing"?"border-left:4px solid #1b6ec2":"")});
+      card.appendChild(h("div",{class:"row", style:"justify-content:space-between"},[
+        h("div",{style:"font-weight:700"},[m.module_id+" · "+m.name]),
+        h("span",{class:"pill "+(st==="done"?"ok":st==="doing"?"blue":"draft")},[st==="done"?"已学":st==="doing"?"学习中":"未学"])
+      ]));
+      card.appendChild(h("div",{class:"small muted"},["理论 "+m.theory_hours+" / 实验 "+m.lab_hours+" 学时 · 知识点 "+kpByMod[m.module_id]+" · 已审题 "+qByMod[m.module_id]]));
+      var ol=h("ul",{style:"margin:6px 0 0 18px;font-size:13px;color:#3a4a5e"}); m.objectives.forEach(function(o){ ol.appendChild(h("li",[o])); });
+      card.appendChild(ol);
+      var btns=h("div",{class:"row", style:"margin-top:8px;gap:6px"});
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ STORE.roadmap[m.module_id]="doing"; saveStore(); renderRoadmap(); }},["学习中"]));
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ STORE.roadmap[m.module_id]="done"; saveStore(); renderRoadmap(); }},["标记已学"]));
+      btns.appendChild(h("button",{class:"btn sm ghost", onclick:function(){ delete STORE.roadmap[m.module_id]; saveStore(); renderRoadmap(); }},["重置"]));
+      card.appendChild(btns);
+      grid.appendChild(card);
+    });
+    view.appendChild(grid);
+  }
+
+  function renderMistakes(){
+    view.innerHTML="";
+    var cname=(COURSE==="LA"?"物流企业会计":"民用航空运输企业会计");
+    view.appendChild(h("h2",{class:"sec"},[iconWarn(),"错题本 · 间隔复习（"+cname+"）"]));
+    // 按课程隔离：仅显示当前课程的错题
+    var MS=STORE.mistakes.filter(function(m){ return mCourse(m)===COURSE; });
+    var total=MS.length, masterN=0, dueN=0;
+    MS.forEach(function(m){ if(m.master) masterN++; if(!m.master && m.due<=todayStr()) dueN++; });
+    view.appendChild(h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"row", style:"justify-content:space-between"},[
+        h("span",["错题 "+total+" · 待复习 "+dueN+" · 已掌握 "+masterN]),
+        h("button",{class:"btn sm ghost", onclick:function(){ if(confirm("确定清空【"+cname+"】的错题本？其它课程的错题不受影响。")){ STORE.mistakes=STORE.mistakes.filter(function(m){return mCourse(m)!==COURSE;}); saveStore(); renderMistakes(); } }},["清空本课错题"])
+      ]),
+      h("div",{class:"small muted", style:"margin-top:6px"},["错题本按课程隔离：在「"+cname+"」中加入的错题只在本书显示；切换到另一门课程后可看到该课程的错题。"])
+    ]));
+    if(!total){ view.appendChild(h("div",{class:"card empty"},["还没有错题。练习中答错的题会自动提示加入；在「智能评阅」提交后也可一键把未掌握题目加入本书。"])); return; }
+    var list=h("div",{class:"card"});
+    MS.forEach(function(m, idx){
+      var q=byId(QS,"question_id",m.qid);
+      var row=h("div",{style:"padding:10px 0;border-bottom:1px solid #eef1f6"});
+      row.appendChild(h("div",{class:"row", style:"justify-content:space-between"},[
+        h("div",{style:"font-weight:600"},[((q?q.stem:"题 "+m.qid)||"").slice(0,50)]),
+        h("span",{class:"pill "+(m.master?"ok":(m.due<=todayStr()?"warn":"draft"))},[m.master?"已掌握":(m.due<=todayStr()?"待复习":"复习中")])
+      ]));
+      row.appendChild(h("div",{class:"small muted"},["KP:"+m.kp+" · 加入 "+m.added+" · 复习 "+m.reps+" 次 · 下次 "+m.due]));
+      var btns=h("div",{class:"row", style:"margin-top:6px;gap:6px"});
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ var box=document.getElementById("rep"+m.id); if(!box){ box=h("div",{id:"rep"+m.id, style:"margin-top:8px;padding:8px;background:#f8fbff;border-radius:6px"}); row.appendChild(box); } box.innerHTML=""; box.appendChild(qPanel(q,{onResult:function(correct){ if(correct){ m.reps++; m.due=dateAdd(todayStr(), REVIEW_INTERVALS[Math.min(m.reps,4)]); m.last=todayStr(); saveStore(); renderMistakes(); } }})); }},["重练"]));
+      btns.appendChild(h("button",{class:"btn sm", onclick:function(){ m.master=true; saveStore(); renderMistakes(); }},["标记掌握"]));
+      btns.appendChild(h("button",{class:"btn sm ghost", onclick:function(){ var gi=STORE.mistakes.indexOf(m); if(gi>=0) STORE.mistakes.splice(gi,1); saveStore(); renderMistakes(); }},["删除"]));
+      row.appendChild(btns);
+      list.appendChild(row);
+    });
+    view.appendChild(list);
+  }
+
+  function renderDaily(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconBulb(),"每日一题"]));
+    var streak=streakDays();
+    view.appendChild(h("div",{class:"card", style:"margin-bottom:14px"},[
+      h("div",{class:"row", style:"justify-content:space-between"},[ h("b",["打卡"]), h("span",{class:"small"},[streak+" 天连续"]) ])
+    ]));
+    var doneId=STORE.daily[todayStr()];
+    if(doneId){
+      var qd=byId(QS,"question_id",doneId);
+      view.appendChild(h("div",{class:"callout"},["今日已完成（"+(qd?qd.kp_id:"")+"）。可复习或明日光临。"]));
+      if(qd) view.appendChild(h("div",{class:"card"},[h("div",{class:"small muted"},["今日题目"]), qPanel(qd)]));
+    } else {
+      var pool=QS.filter(function(q){return q.review_status==="approved";});
+      if(!pool.length) pool=QS;
+      var pick=pool[Math.floor(Math.random()*pool.length)];
+      STORE.daily[todayStr()]=pick.question_id; saveStore();
+      view.appendChild(h("div",{class:"card"},[h("div",{class:"small muted"},["今日题目（"+pick.kp_id+"）"]), qPanel(pick)]));
+    }
+  }
+
+  function renderMine(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconUser(),"我的学习中心"]));
+
+    // Phase 9: 身份与进度同步
+    var pf = STORE.profile||{};
+    var nameInput = h("input",{type:"text", value:pf.name||"", placeholder:"姓名/昵称", style:"min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:160px"});
+    var sidInput = h("input",{type:"text", value:pf.sid||"", placeholder:"学号(可选)", style:"min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;width:160px"});
+    var srvInput = h("input",{type:"text", value:STORE.server||"", placeholder:"后端服务器地址，如 https://host:8000", style:"min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;flex:1;min-width:240px"});
+    function saveProfile(){
+      STORE.profile = {name:(nameInput.value||"").trim(), sid:(sidInput.value||"").trim()};
+      STORE.server = (srvInput.value||"").trim().replace(/\/$/,"");
+      saveStore();
+      alert("已保存身份与服务器地址");
+    }
+    var syncCard = h("div",{class:"card", style:"margin-bottom:14px"});
+    syncCard.appendChild(h("h3",{class:"sec",style:"margin-top:0"},["身份与进度同步"]));
+    syncCard.appendChild(h("div",{class:"row",style:"align-items:flex-end;gap:10px;flex-wrap:wrap"},[
+      h("div",{class:"field"},[h("div",{class:"small muted"},["姓名/昵称"]), nameInput]),
+      h("div",{class:"field"},[h("div",{class:"small muted"},["学号"]), sidInput]),
+      h("div",{class:"field",style:"flex:1;min-width:240px"},[h("div",{class:"small muted"},["后端服务器地址"]), srvInput])
+    ]));
+    syncCard.appendChild(h("div",{class:"row",style:"margin-top:10px;gap:8px"},[
+      h("button",{class:"btn", onclick:saveProfile},["保存身份"]),
+      h("button",{class:"btn primary", onclick:function(){ doReport(nameInput.value, sidInput.value, srvInput.value); }},["📤 上报我的进度"])
+    ]));
+    syncCard.appendChild(h("div",{class:"small muted",style:"margin-top:8px"},["保存后点「上报我的进度」把本机学习数据推送到后端；教师端「教师驾驶舱」可拉取全班实时数据。" ]));
+    view.appendChild(syncCard);
+    var doneMods=0; MODS.forEach(function(m){ if(STORE.roadmap[m.module_id]==="done") doneMods++; });
+    var totalMist=STORE.mistakes.length, masterMist=0; STORE.mistakes.forEach(function(m){ if(m.master) masterMist++; });
+    var checkDays=STORE.checkins.length, totalMin=0; STORE.checkins.forEach(function(c){ totalMin+=(c.min||0); });
+    var cards=[
+      {n:checkDays, l:"打卡天数", s:"连续 "+streakDays()+" 天"},
+      {n:totalMin, l:"累计学习(分)", s:""},
+      {n:doneMods+"/"+MODS.length, l:"模块完成", s:"路线图"},
+      {n:totalMist, l:"错题总数", s:"已掌握 "+masterMist}
+    ];
+    var grid=h("div",{class:"grid g3"});
+    cards.forEach(function(cd){ grid.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(cd.n)]),h("div",{class:"l"},[cd.l]),h("div",{class:"s"},[h("span",{class:"muted"},[cd.s])])])); });
+    view.appendChild(grid);
+    var charts=h("div",{class:"grid g2", style:"margin-top:14px"});
+    charts.appendChild(h("div",{class:"card"},[h("div",{class:"muted small"},["错题掌握比例"]), h("div",{html:donut([{k:"已掌握",v:masterMist},{k:"待复习",v:Math.max(0,totalMist-masterMist)}],["#1f9d55","#e08a00"],160)})]));
+    var series=[]; for(var i=13;i>=0;i--){ var dd=dateAdd(todayStr(),-i); var mm=0; STORE.checkins.forEach(function(c){ if(c.date===dd) mm+=(c.min||0); }); series.push(mm); }
+    charts.appendChild(h("div",{class:"card"},[h("div",{class:"muted small"},["近 14 天学习时长(分)"]), h("div",{html:lineChart([{name:"分钟",data:series}],320)})]));
+    view.appendChild(charts);
+    var actions=h("div",{class:"card", style:"margin-top:14px"});
+    actions.appendChild(h("div",{class:"row", style:"gap:8px"},[
+      h("button",{class:"btn", onclick:function(){ window.print(); }},["导出学习报告(PDF)"]),
+      h("button",{class:"btn ghost", onclick:function(){ if(confirm("将清空本机全部学习进度（打卡/错题/路线图/每日一题），确定？")){ try{localStorage.removeItem(STORE_KEY);}catch(e){} STORE={start:"",checkins:[],mistakes:[],roadmap:{},daily:{}}; saveStore(); renderMine(); } }},["重置进度"])
+    ]));
+    actions.appendChild(h("div",{class:"small muted", style:"margin-top:8px"},["所有学习数据仅保存在你当前浏览器（localStorage），不会上传服务器。换设备或清缓存会丢失，建议定期「导出学习报告」。"]));
+    view.appendChild(actions);
+  }
+
   // ---------- router ----------
-  var tabs={overview:renderOverview, kg:renderKG, quiz:renderQuiz, dash:renderDash, review:renderReview, agent:renderAgent};
+  function renderBlock(b, S){
+    if(b.type==="p") return h("p",{class:"syl-note",style:"margin:8px 0"},[b.text]);
+    if(b.type==="h3") return h("div",{class:"h3"},[b.text]);
+    if(b.type==="callout") return h("div",{class:"callout"},[h("div",{class:"syl-note"},[b.text])]);
+    if(b.type==="code") return h("div",{class:"code"},[b.text]);
+    if(b.type==="list"){
+      var ul=h(b.ordered?"ol":"ul",{class:"syl-note",style:"margin:6px 0;padding-left:20px"});
+      b.items.forEach(function(it){ ul.appendChild(h("li",{},[it])); });
+      return ul;
+    }
+    if(b.type==="table"){
+      var t=h("table",{class:"t"});
+      var thead=h("thead"); var trh=h("tr");
+      b.head.forEach(function(c){ trh.appendChild(h("th",{},[c])); });
+      thead.appendChild(trh); t.appendChild(thead);
+      var tb=h("tbody");
+      b.rows.forEach(function(r){ var tr=h("tr"); r.forEach(function(c){ tr.appendChild(h("td",{},[c])); }); tb.appendChild(tr); });
+      t.appendChild(tb); return t;
+    }
+    if(b.type==="chapters"){
+      var grid=h("div",{class:"ch-grid"});
+      S.chapters.forEach(function(ch){
+        var c=h("div",{class:"ch-card"});
+        c.appendChild(h("h4",{},[ch.no+" "+ch.title]));
+        var meta=h("div",{class:"meta"});
+        meta.appendChild(h("span",{class:"badge"},["理论 "+ch.theory]));
+        meta.appendChild(h("span",{class:"badge"},["实验 "+ch.exp]));
+        meta.appendChild(h("span",{class:"badge"},["小计 "+ch.total]));
+        if(ch.core) meta.appendChild(h("span",{class:"badge core"},["核心章"]));
+        c.appendChild(meta);
+        c.appendChild(h("span",{class:"lbl"},["教学目标"]));
+        c.appendChild(h("div",{class:"syl-note"},[ch.objective]));
+        c.appendChild(h("span",{class:"lbl"},["重点"]));
+        c.appendChild(h("div",{class:"syl-note"},[ch.focus]));
+        c.appendChild(h("span",{class:"lbl"},["难点"]));
+        c.appendChild(h("div",{class:"syl-note"},[ch.difficulty]));
+        c.appendChild(h("span",{class:"lbl"},["内容"]));
+        var ul=h("ul"); ch.content.forEach(function(x){ ul.appendChild(h("li",{},[x])); }); c.appendChild(ul);
+        if(ch.experiment){ c.appendChild(h("span",{class:"lbl"},["实验"])); c.appendChild(h("div",{class:"syl-note"},[ch.experiment])); }
+        c.appendChild(h("span",{class:"lbl"},["智能体资源"]));
+        c.appendChild(h("div",{class:"syl-note"},[ch.agent]));
+        grid.appendChild(c);
+      });
+      return grid;
+    }
+    return h("div",{},[""]);
+  }
+  function renderSyllabus(){
+    var S = window.LOGISTICS_SYLLABUS;
+    view.innerHTML="";
+    if(!S){ view.appendChild(h("div",{class:"empty"},["大纲数据未加载"])); return; }
+    view.appendChild(h("h2",{class:"sec"},[iconBook(), "课程大纲 · "+S.course]));
+    view.appendChild(h("div",{class:"callout"},[
+      h("div",{class:"syl-note"},[S.edition]),
+      h("div",{class:"syl-note",style:"margin-top:6px"},["智能体代号："+S.agentCode])
+    ]));
+    var noteCard=h("div",{class:"card"});
+    noteCard.appendChild(h("div",{class:"h3"},["〇、修订说明（请先读）"]));
+    var nul=h("ul",{class:"syl-note",style:"margin:4px 0;padding-left:20px"});
+    S.notes.forEach(function(t){ nul.appendChild(h("li",{},[t])); });
+    noteCard.appendChild(nul);
+    view.appendChild(noteCard);
+    S.sections.forEach(function(sec){
+      var card=h("div",{class:"card"});
+      card.appendChild(h("h2",{class:"sec",style:"font-size:16px;margin-top:0"},[sec.title]));
+      sec.blocks.forEach(function(b){ card.appendChild(renderBlock(b, S)); });
+      view.appendChild(card);
+    });
+  }
+
+  // ============ LA 智能体功能闭环：试卷中心 / 智能评阅 / 成绩报表 ============
+  var PAPER=null;
+  function laQuestions(){ return (window.LA_DATA && window.LA_DATA.questions) || []; }
+  function laRules(){ return (window.LA_DATA && window.LA_DATA.paper_rules) || {}; }
+  function rngFrom(seed){ var s=(seed||1)>>>0||1; return function(){ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+  function pickJS(pool,n,dw,rnd){
+    if(!pool.length||n<=0) return [];
+    var byDiff={easy:[],medium:[],hard:[]}; pool.forEach(function(q){ byDiff[q.difficulty].push(q); });
+    var order=["easy","medium","hard"], total=order.reduce(function(a,d){return a+(dw[d]||0);},0)||1, chosen=[];
+    order.sort(function(a,b){return (dw[b]||0)-(dw[a]||0);}).forEach(function(d){
+      var want=Math.round(n*(dw[d]||0)/total);
+      var avail=byDiff[d].filter(function(q){return chosen.indexOf(q)<0;});
+      for(var i=avail.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=avail[i];avail[i]=avail[j];avail[j]=t;}
+      chosen=chosen.concat(avail.slice(0,want));
+    });
+    var remain=pool.filter(function(q){return chosen.indexOf(q)<0;});
+    for(var i=remain.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=remain[i];remain[i]=remain[j];remain[j]=t;}
+    return chosen.concat(remain.slice(0,Math.max(0,n-chosen.length))).slice(0,n);
+  }
+  function genPaperJS(name,seed){
+    var rules=laRules(), tpl=rules[name]; if(!tpl) return null;
+    var rnd=rngFrom(seed), Q=laQuestions(), pool=Q.slice();
+    if(tpl.coverage==="sampled"){
+      var chs=[]; for(var c=1;c<=9;c++) chs.push(c);
+      for(var i=chs.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=chs[i];chs[i]=chs[j];chs[j]=t;}
+      pool=Q.filter(function(q){return chs.slice(0,4).indexOf(q.chapter)>=0;});
+    }
+    var chosen=[];
+    Object.keys(tpl.mix).forEach(function(t){ var n=tpl.mix[t]; var p=pool.filter(function(q){return q.type===t && chosen.indexOf(q)<0;}); chosen=chosen.concat(pickJS(p,n,tpl.difficulty,rnd)); });
+    var to={single:0,multiple:1,judge:2,term:3,essay:4,calc:5,case:6};
+    chosen.sort(function(a,b){return (a.chapter-b.chapter)||((to[a.type]||9)-(to[b.type]||9));});
+    var total=chosen.reduce(function(a,q){return a+(q.score||0);},0);
+    return {paper_id:"LA-PAPER-"+name+"-"+(seed||"rand"), template:name, title:"物流企业会计（第六版）"+name, duration:tpl.duration, purpose:tpl.purpose, total_score:total, question_count:chosen.length,
+      questions:chosen.map(function(q,i){return {seq:i+1,qid:q.question_id,chapter:q.chapter,kp_id:q.kp_id,type:q.type,type_cn:q.type_cn,score:q.score,difficulty:q.difficulty,stem:q.stem,options:q.options,answer:q.answer,reference_answer:q.reference_answer,rubric:q.rubric};})};
+  }
+  // ---- JS 评阅（客观精确 + 主观分步） ----
+  var STOPSET=new Set("的了吗呢吧啊和与及或并把被在对于该各其及以及之间是也都有为以可应即如若等其此这那所".split(""));
+  function extractNumsJS(s){ if(!s) return []; var m=s.match(/\d+(?:\.\d+)?\s*(?:万|元|%|个|年|倍)?/g)||[]; return m.map(function(x){return x.replace(/ /g,"");}); }
+  function extractAcctJS(s){ if(!s) return []; return s.match(/(?:借|贷)\s*[:：]\s*[\u4e00-\u9fa5（）、，]+?(?=\s|$)/g)||[]; }
+  function kwsJS(s){ if(!s) return []; var t=s.replace(/[^\u4e00-\u9fa5]/g," "); var toks=t.match(/[\u4e00-\u9fa5]{2,4}/g)||[]; var out=[],seen={}; toks.forEach(function(w){ if(!STOPSET.has(w)&&!seen[w]){seen[w]=1;out.push(w);} }); return out; }
+  function intersectJS(a,b){ var c=0; a.forEach(function(x){ if(b.indexOf(x)>=0) c++; }); return c; }
+  function stepCoveredJS(text,s){
+    var sn=new Set(extractNumsJS(text));
+    var numHit=s.numbers.length?(intersectJS(s.numbers,Array.from(sn))/s.numbers.length):0;
+    var st=new Set(kwsJS(text));
+    var termHit=s.terms.length?(intersectJS(s.terms,Array.from(st))/s.terms.length):0;
+    var sa=new Set(extractAcctJS(text));
+    var acctHit=s.accounts.length?(intersectJS(s.accounts,Array.from(sa))/s.accounts.length):0;
+    if(s.accounts.length||s.numbers.length) return Math.max(numHit,acctHit)>=0.5 || termHit>=0.6;
+    return termHit>=0.5;
+  }
+  function eqSet(a,b){ a=a||[];b=b||[]; if(a.length!==b.length) return false; var sa=a.map(function(x){return String(x).toUpperCase();}).sort(), sb=b.map(function(x){return String(x).toUpperCase();}).sort(); return sa.every(function(x,i){return x===sb[i];}); }
+  function gradeObjectiveJS(q,ans){
+    if(q.type==="multiple") return eqSet(ans||[],q.answer);
+    if(q.type==="judge") return String(ans).trim()===String(judgeCorrectLabel(q));
+    return String(ans).trim().toUpperCase()===String(q.answer).trim().toUpperCase();
+  }
+  function gradeSubjectiveJS(q,text){
+    var rub=q.rubric, maxs=q.score||0;
+    if(!rub||!rub.steps||!rub.steps.length) return {earned:0,max:maxs,hits:[]};
+    var steps=rub.steps, per=maxs/steps.length, earned=0, hits=[];
+    steps.forEach(function(s){ var ok=stepCoveredJS(text||"",s); hits.push(ok); if(ok) earned+=per; });
+    return {earned:Math.round(earned*10)/10,max:maxs,hits:hits};
+  }
+  // ---- TAB: 试卷中心 ----
+  function renderPaper(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconQuiz(),"试卷中心 · 自动组卷"]));
+    var rules=laRules(), names=Object.keys(rules), grid=h("div",{class:"grid g3"});
+    names.forEach(function(nm){
+      var t=rules[nm], card=h("div",{class:"card"});
+      card.appendChild(h("div",{style:"font-weight:700"},[nm]));
+      card.appendChild(h("div",{class:"small muted"},[t.purpose+" · "+t.duration]));
+      card.appendChild(h("div",{class:"small muted"},["题型："+Object.keys(t.mix).map(function(k){return ({single:"单选",multiple:"多选",judge:"判断",term:"名解",essay:"思",calc:"计算",case:"案例"}[k]||k)+"×"+t.mix[k];}).join(" / ")]));
+      card.appendChild(h("button",{class:"btn sm",style:"margin-top:8px",onclick:function(){ PAPER=genPaperJS(nm,Math.floor(Math.random()*1e9)); renderPaper(); window.scrollTo(0,document.getElementById("paperBox").offsetTop); }},["生成试卷"]));
+      grid.appendChild(card);
+    });
+    view.appendChild(grid);
+    var box=h("div",{id:"paperBox",style:"margin-top:14px"});
+    view.appendChild(box);
+    if(PAPER) renderPaperDoc(PAPER,box);
+  }
+  function renderPaperDoc(paper,box){
+    box.innerHTML="";
+    box.appendChild(h("div",{class:"card"},[
+      h("div",{class:"row",style:"justify-content:space-between"},[h("b",[paper.title]),h("span",{class:"small muted"},[paper.question_count+" 题 / "+paper.total_score+" 分 / "+paper.duration])]),
+      (function(){ var b=h("div",{class:"row",style:"margin-top:8px;gap:8px"});
+        b.appendChild(h("button",{class:"btn sm",onclick:function(){ go("autoexam"); }},["进入答题与评阅"]));
+        b.appendChild(h("button",{class:"btn sm ghost",onclick:function(){ var ak=document.getElementById("ansKey"); ak.style.display=(ak.style.display==="none")?"":"none"; }},["显示/隐藏答案"]));
+        return b; })()
+    ]));
+    var list=h("div",{style:"margin-top:8px"});
+    paper.questions.forEach(function(it){
+      var item=h("div",{style:"padding:10px 0;border-bottom:1px solid #eef1f6"});
+      item.appendChild(h("div",{class:"small muted"},["第"+it.seq+"题 · "+it.type_cn+" · "+it.score+"分 · 第"+it.chapter+"章 · "+(it.kp_id||"")]));
+      item.appendChild(h("div",{style:"margin:4px 0"},[it.stem]));
+      if(it.options){ Object.keys(it.options).forEach(function(k){ if(it.options[k]) item.appendChild(h("div",{class:"small"},[k+". "+it.options[k]])); }); }
+      item.appendChild(h("div",{class:"ans-key",id:"ansKey",style:"display:none;margin-top:6px;color:#1f9d55"},["答案："+(it.type==="multiple"?(it.answer||[]).join(""):it.answer)+(it.reference_answer?("　|　参考答案："+it.reference_answer):"")]));
+      list.appendChild(item);
+    });
+    box.appendChild(list);
+  }
+  // ---- TAB: 智能评阅 ----
+  function renderAutoExam(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconQuiz(),"智能评阅 · 自动判分"]));
+    if(!PAPER){
+      view.appendChild(h("div",{class:"card empty"},["尚未生成试卷。请先到「试卷中心」生成一套试卷，再进入本题答题与评阅；或点下方按钮随机生成一套期末试卷演示。"]));
+      view.appendChild(h("button",{class:"btn",onclick:function(){ PAPER=genPaperJS("期末试卷",Math.floor(Math.random()*1e9)); renderAutoExam(); }},["随机生成期末试卷并演示"]));
+      return;
+    }
+    if(!window.__examAnswers) window.__examAnswers={};
+    var ans=window.__examAnswers;
+    view.appendChild(h("div",{class:"card"},[h("b",[PAPER.title]),h("span",{class:"small muted"},["　"+PAPER.question_count+"题 / "+PAPER.total_score+"分"]),h("div",{class:"small muted"},["客观题自动判分；主观题按 rubric 分步给分（命中步骤即给分）。"])]));
+    var box=h("div",{id:"examBox"});
+    PAPER.questions.forEach(function(it){
+      var qwrap=h("div",{class:"card",style:"margin-bottom:12px"});
+      qwrap.appendChild(h("div",{class:"small muted"},["第"+it.seq+"题 · "+it.type_cn+" · "+it.score+"分 · 第"+it.chapter+"章"]));
+      qwrap.appendChild(h("div",{style:"margin:4px 0"},[it.stem]));
+      var objective=(it.type==="single"||it.type==="multiple"||it.type==="judge");
+      if(objective){
+        if(it.type==="judge"){
+          var jk=(COURSE==="LA")?(it.options||["正确","错误"]):["对","错"];
+          jk.forEach(function(k){ var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=k; }}); qwrap.appendChild(o); });
+        } else if(it.type==="multiple"){
+          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return; var o=h("button",{class:"opt",onclick:function(){ var on=o.classList.toggle("sel"); if(on){ (ans[it.qid]=ans[it.qid]||[]).push(k); } else { ans[it.qid]=(ans[it.qid]||[]).filter(function(x){return x!==k;}); } }}); qwrap.appendChild(o); });
+        } else {
+          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return; var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=k; }}); qwrap.appendChild(o); });
+        }
+      } else {
+        var ta=h("textarea",{rows:"3",style:"width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit"});
+        ta.oninput=function(){ ans[it.qid]=ta.value; }; qwrap.appendChild(ta);
+      }
+      box.appendChild(qwrap);
+    });
+    view.appendChild(box);
+    view.appendChild(h("button",{class:"btn",style:"margin-top:8px",onclick:function(){ runGrade(); }},["提交评阅"]));
+    view.appendChild(h("div",{id:"examResult",style:"margin-top:14px"}));
+  }
+  function runGrade(){
+    var ans=window.__examAnswers||{}, paper=PAPER, earned=0, max=0;
+    var resBox=document.getElementById("examResult"); resBox.innerHTML="";
+    var rows=h("div",{class:"card"});
+    var flagged=[], examRows=[];   // 未掌握题目；逐题结果（供教师端热力图）
+    paper.questions.forEach(function(it){
+      var r;
+      if(it.type==="single"||it.type==="multiple"||it.type==="judge"){ var correct=gradeObjectiveJS(it,ans[it.qid]); r={correct:correct,earned:correct?it.score:0,max:it.score}; }
+      else { r=gradeSubjectiveJS(it,ans[it.qid]||""); r.correct=null; }
+      earned+=r.earned; max+=r.max;
+      // 未掌握判定：客观题答错，或主观题得分率 < 60%
+      var weak = (r.correct===false) || (r.correct===null && r.earned < r.max*0.6);
+      if(weak) flagged.push(it);
+      examRows.push({qid:it.qid, kp_id:it.kp_id, chapter:it.chapter, type:it.type, correct:r.correct, earned:r.earned, max:r.max});
+      var line=h("div",{style:"padding:8px 0;border-bottom:1px solid #eef1f6"});
+      line.appendChild(h("div",{class:"row",style:"justify-content:space-between"},[
+        h("div",{class:"small"},["第"+it.seq+"题 · "+(it.kp_id||"")]),
+        h("span",{class:"pill "+(r.correct===true?"ok":r.correct===false?"warn":(r.earned>=r.max*0.6?"blue":"draft"))},[r.correct===true?"✔ 正确":r.correct===false?"✘ 错误":("得分 "+r.earned+"/"+r.max)])
+      ]));
+      if(it.rubric&&it.rubric.steps&&r.hits){
+        var sb=h("div",{class:"small muted",style:"margin-top:4px"});
+        it.rubric.steps.forEach(function(s,i){ sb.appendChild(h("div",{style:"color:"+(r.hits[i]?"#1f9d55":"#d64545")},[(i+1)+". "+(r.hits[i]?"✓":"✗")+" "+(s.text||"").slice(0,60)])); });
+        line.appendChild(sb);
+      }
+      if(weak){
+        line.appendChild(h("div",{class:"row",style:"margin-top:6px"},[
+          h("button",{class:"btn sm", onclick:function(){ if(addMistake(it.qid,"评阅未掌握（得分"+r.earned+"/"+r.max+"）")) alert("已加入错题本"); else alert("已在错题本中"); }},["加入错题本"])
+        ]));
+      }
+      rows.appendChild(line);
+    });
+    // 留存本次评阅结果，供「教师驾驶舱 · 知识点掌握热力图」使用
+    window.__lastExam={paper:PAPER.title, course:COURSE, date:todayStr(), results:examRows};
+    resBox.appendChild(rows);
+    resBox.appendChild(h("div",{class:"stat",style:"margin-top:12px"},[h("div",{class:"n"},[earned+"/"+max]),h("div",{class:"l"},["总评 "+(max?Math.round(earned/max*100):0)+"%"])]));
+    if(flagged.length){
+      resBox.appendChild(h("div",{class:"card",style:"margin-top:10px"},[
+        h("div",{class:"small muted"},["本次有 "+flagged.length+" 道未掌握题（客观题答错 / 主观题得分率<60%）。"]),
+        h("button",{class:"btn sm",style:"margin-top:8px", onclick:function(){
+          var n=0; flagged.forEach(function(it){ if(addMistake(it.qid,"评阅未掌握（一键加入）")) n++; });
+          alert("已加入 "+n+" 道到错题本"+(flagged.length-n>0?"（"+ (flagged.length-n) +" 道已在错题本中）":""));
+        }},["把 "+flagged.length+" 道未掌握题加入错题本"])
+      ]));
+    }
+  }
+  // ---- TAB: 成绩报表 ----
+  var SAMPLE_CLASS="学01,2023001,82,75,80\n学02,2023002,90,88,92\n学03,2023003,70,60,55\n学04,2023004,95,90,93\n学05,2023005,78,72,68\n学06,2023006,88,80,85\n学07,2023007,65,58,52\n学08,2023008,84,79,81\n学09,2023009,92,86,90\n学10,2023010,74,66,60";
+  function renderGrade(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconUser(),"成绩报表 · 平时30%+期中20%+期末50%"]));
+    view.appendChild(h("div",{class:"card"},[h("div",{class:"small muted"},["粘贴班级成绩（每行：姓名,学号,平时,期中,期末），或点「载入示例班级」。权重固定 30% / 20% / 50%。"])]));
+    var ta=h("textarea",{id:"gradeCSV",rows:"6",style:"width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit;margin-top:8px",placeholder:"张三,2023001,85,78,82"});
+    view.appendChild(ta);
+    var btns=h("div",{class:"row",style:"margin-top:8px;gap:8px"});
+    btns.appendChild(h("button",{class:"btn sm",onclick:function(){ computeGrade(ta.value); }},["生成报表"]));
+    btns.appendChild(h("button",{class:"btn sm ghost",onclick:function(){ ta.value=SAMPLE_CLASS; }},["载入示例班级"]));
+    view.appendChild(btns);
+    view.appendChild(h("div",{id:"gradeOut",style:"margin-top:14px"}));
+  }
+  function computeGrade(csv){
+    var rows=csv.trim().split(/\n+/).map(function(l){return l.split(/[,，\t]/).map(function(x){return x.trim();});}).filter(function(r){return r.length>=5;});
+    var st=rows.map(function(r){return {name:r[0],sid:r[1],usual:parseFloat(r[2])||0,mid:parseFloat(r[3])||0,final:parseFloat(r[4])||0};});
+    st.forEach(function(s){ s.total=Math.round((s.usual*0.3+s.mid*0.2+s.final*0.5)*10)/10; });
+    st.sort(function(a,b){return b.total-a.total;});
+    st.forEach(function(s,i){s.rank=i+1;});
+    var out=document.getElementById("gradeOut"); out.innerHTML="";
+    var avg=Math.round(st.reduce(function(a,s){return a+s.total;},0)/st.length*10)/10;
+    out.appendChild(h("div",{class:"stat",style:"margin-bottom:12px"},[h("div",{class:"n"},[String(avg)]),h("div",{class:"l"},["班级平均分（"+st.length+"人）"])]));
+    var tbl=h("table",{class:"t",style:"width:100%"});
+    tbl.appendChild(h("tr",{},[h("th",{},["排名"]),h("th",{},["姓名"]),h("th",{},["学号"]),h("th",{},["平时30"]),h("th",{},["期中20"]),h("th",{},["期末50"]),h("th",{},["总评"])]));
+    st.forEach(function(s){ tbl.appendChild(h("tr",{},[h("td",{},[String(s.rank)]),h("td",{},[s.name]),h("td",{},[s.sid]),h("td",{},[String(s.usual)]),h("td",{},[String(s.mid)]),h("td",{},[String(s.final)]),h("td",{},[String(s.total)])])); });
+    out.appendChild(tbl);
+    var dist=[0,0,0,0,0]; st.forEach(function(s){ var t=s.total; if(t>=90)dist[0]++; else if(t>=80)dist[1]++; else if(t>=70)dist[2]++; else if(t>=60)dist[3]++; else dist[4]++; });
+    var d2=[{k:"优秀≥90",v:dist[0]},{k:"良好80-89",v:dist[1]},{k:"中等70-79",v:dist[2]},{k:"及格60-69",v:dist[3]},{k:"不及格<60",v:dist[4]}];
+    out.appendChild(h("div",{class:"card chart-card",style:"margin-top:12px"},[h("h2",{class:"sec"},["成绩分布"]),h("div",{html:hbars(d2,"#1b6ec2")})]));
+  }
+
+  // ================= LA 教师驾驶舱：知识点掌握热力图 + 教学改进建议 =================
+  function clampNum(v,lo,hi){ return Math.max(lo, Math.min(hi, v)); }
+  function hashStr(s){ var x=0; s=String(s||""); for(var i=0;i<s.length;i++){ x=(x*31+s.charCodeAt(i))>>>0; } return x; }
+  function simClassAvg(){
+    try{
+      var rows=SAMPLE_CLASS.trim().split(/\n+/).map(function(l){return l.split(/[,，]/);}).filter(function(r){return r.length>=5;});
+      var t=rows.reduce(function(a,r){ return a + ((parseFloat(r[2])||0)*0.3 + (parseFloat(r[3])||0)*0.2 + (parseFloat(r[4])||0)*0.5); },0);
+      return rows.length? t/rows.length : 75;
+    }catch(e){ return 75; }
+  }
+  // 每个知识点的掌握率：优先用真实评阅结果，未覆盖的用示例班级推算，并叠加本机错题惩罚
+  function kpMastery(){
+    var ex=window.__lastExam||null;
+    var real = !!(ex && ex.course===COURSE && ex.results && ex.results.length);
+    var base = simClassAvg();
+    var missMap={};
+    (STORE.mistakes||[]).forEach(function(m){ if(mCourse(m)!==COURSE || m.master) return; missMap[m.kp]=(missMap[m.kp]||0)+1; });
+    var rows=KPS.map(function(k){
+      var rate=null;
+      if(real){
+        var rs=(ex.results||[]).filter(function(r){ return r.kp_id===k.kp_id; });
+        if(rs.length){ rate = rs.reduce(function(a,r){ return a + (r.max? r.earned/r.max : 0); },0)/rs.length*100; }
+      }
+      if(rate===null){
+        var noise=((hashStr(k.kp_id+"|"+k.title)%40)-14);   // 确定性扰动 -14..+25
+        rate=clampNum(base+noise, 25, 98);
+      }
+      var miss=missMap[k.kp_id]||0;
+      rate=Math.max(15, rate - miss*6);   // 未掌握错题每题扣 6 分
+      return {kp_id:k.kp_id, title:k.title, chapter:k.chapter, rate:Math.round(rate), miss:miss};
+    });
+    return {real:real, base:Math.round(base), rows:rows};
+  }
+  function heatColor(r){
+    if(r>=85) return "#1a7f37";
+    if(r>=70) return "#6ab04c";
+    if(r>=60) return "#f0b429";
+    return "#d64545";
+  }
+  function heatmapSVG(rows){
+    var byCh={};
+    rows.forEach(function(r){ (byCh[r.chapter]=byCh[r.chapter]||[]).push(r); });
+    var chs=Object.keys(byCh).map(Number).sort(function(a,b){return a-b;});
+    var CW=46, CH=30, GAP=4, LBL=62, PAD=6;
+    var maxN=Math.max.apply(null, chs.map(function(c){return byCh[c].length;}))||1;
+    var W=LBL+maxN*(CW+GAP)+PAD*2+8;
+    var H=chs.length*(CH+GAP)+PAD*2+8;
+    var s='<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="max-width:'+W+'px">';
+    chs.forEach(function(c,i){
+      var y=PAD+i*(CH+GAP);
+      s+='<text x="4" y="'+(y+CH/2+4)+'" font-size="11" fill="#1f2d3d">第'+c+'章</text>';
+      byCh[c].forEach(function(k,j){
+        var x=LBL+j*(CW+GAP);
+        s+='<rect x="'+x+'" y="'+y+'" width="'+CW+'" height="'+CH+'" rx="5" fill="'+heatColor(k.rate)+'" opacity="0.92"></rect>';
+        s+='<text x="'+(x+CW/2)+'" y="'+(y+CH/2+4)+'" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="600">'+k.rate+'</text>';
+        s+='<title>'+esc(k.kp_id+" "+k.title+"：掌握率 "+k.rate+"%")+'</title>';
+      });
+    });
+    s+='</svg>';
+    return s;
+  }
+  function dashSuggestions(rows){
+    var out=[];
+    var byCh={};
+    rows.forEach(function(r){ (byCh[r.chapter]=byCh[r.chapter]||[]).push(r); });
+    var chAgg=Object.keys(byCh).map(function(c){
+      var arr=byCh[c];
+      return {chapter:Number(c), avg:Math.round(arr.reduce(function(a,x){return a+x.rate;},0)/arr.length), n:arr.length};
+    }).sort(function(a,b){ return a.avg-b.avg; });
+    chAgg.slice(0,3).forEach(function(c){
+      var ct=(D.chapters||[]).filter(function(x){return x.chapter===c.chapter;})[0];
+      out.push({t:"章节", s:"第"+c.chapter+"章「"+(ct?ct.title:"")+"」平均掌握率 "+c.avg+"%（"+c.n+"个知识点），为班级薄弱环节，建议安排 1 次专题复习 + 针对性小测。"});
+    });
+    rows.slice().sort(function(a,b){ return a.rate-b.rate; }).slice(0,6).forEach(function(k){
+      var extra = k.miss? ("；本机错题本中该知识点尚有 "+k.miss+" 题未掌握"):"";
+      out.push({t:"知识点", s:k.kp_id+"「"+k.title+"」掌握率 "+k.rate+"%"+extra+"，建议补充例题讲解与变式训练。"});
+    });
+    var missN=(STORE.mistakes||[]).filter(function(m){ return mCourse(m)===COURSE && !m.master; }).length;
+    if(missN>0) out.push({t:"错题", s:"本机错题本现存 "+missN+" 道未掌握题，建议按 1/2/4/7/15 天间隔复习节奏完成重练。"});
+    if(!(window.__lastExam && window.__lastExam.course===COURSE))
+      out.push({t:"数据", s:"当前为示例推算数据。教师在「智能评阅」完成一次班级评阅后，热力图将自动切换为该次实测掌握率。"});
+    return out;
+  }
+  function renderDashLA(){
+    view.innerHTML="";
+    view.appendChild(h("h2",{class:"sec"},[iconDash(),"教师驾驶舱 · 知识点掌握分析（物流企业会计）"]));
+    var m=kpMastery();
+    var avgAll=Math.round(m.rows.reduce(function(a,r){return a+r.rate;},0)/(m.rows.length||1));
+    var weakN=m.rows.filter(function(r){return r.rate<70;}).length;
+    var g=h("div",{class:"dash-grid"});
+    [["知识点总数",m.rows.length],["平均掌握率",avgAll+"%"],["薄弱知识点(<70%)",weakN],
+     ["示例班级均分",m.base],["题库题量",((D.index&&D.index.total)||(D.questions||[]).length)+"题"],
+     ["数据来源",(m.real?"本次评阅实测":"示例推算")]]
+      .forEach(function(p){ g.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])])); });
+    view.appendChild(g);
+
+    var hc=h("div",{class:"card chart-card",style:"margin-top:14px"});
+    hc.appendChild(h("h2",{class:"sec"},["知识点掌握热力图"]));
+    hc.appendChild(h("div",{class:"small muted"},[
+      (m.real? ("数据来源：最近一次「智能评阅」（"+esc((window.__lastExam.paper||""))+"），按知识点汇总得分率；未覆盖的知识点以示例推算补齐。")
+             : ("数据来源：示例班级成绩推算（演示）。在「智能评阅」完成一次评阅后将自动切换为实测数据。"))
+    ]));
+    hc.appendChild(h("div",{style:"margin-top:10px;overflow-x:auto",html:heatmapSVG(m.rows)}));
+    var lg=h("div",{class:"row",style:"margin-top:10px;gap:12px;flex-wrap:wrap"});
+    [["#1a7f37","掌握好 ≥85%"],["#6ab04c","良好 70–84%"],["#f0b429","警戒 60–69%"],["#d64545","薄弱 <60%"]]
+      .forEach(function(x){
+        lg.appendChild(h("span",{class:"row",style:"align-items:center;gap:5px"},[
+          h("i",{style:"display:inline-block;width:14px;height:14px;border-radius:3px;background:"+x[0]}),
+          h("span",{class:"small muted"},[x[1]])
+        ]));
+      });
+    hc.appendChild(lg);
+    view.appendChild(hc);
+
+    var sc=h("div",{class:"card",style:"margin-top:14px"});
+    sc.appendChild(h("h2",{class:"sec"},["教学改进建议（自动生成）"]));
+    sc.appendChild(h("div",{class:"small muted"},["按掌握率由低到高排序，优先处理排在最前的章节与知识点。"]));
+    dashSuggestions(m.rows).forEach(function(s){
+      sc.appendChild(h("div",{style:"padding:8px 0;border-bottom:1px solid #eef1f6"},[
+        h("span",{class:"pill "+(s.t==="章节"?"warn":s.t==="知识点"?"blue":"draft")},[s.t]),
+        h("span",{style:"margin-left:8px"},[s.s])
+      ]));
+    });
+    view.appendChild(sc);
+  }
+
+  var tabs={overview:renderOverview, syllabus:renderSyllabus, kg:renderKG, quiz:renderQuiz, mistakes:renderMistakes, daily:renderDaily, roadmap:renderRoadmap, paper:renderPaper, autoexam:renderAutoExam, grade:renderGrade, mine:renderMine, dash:renderDash, review:renderReview, agent:renderAgent};
   function go(tab){
     document.querySelectorAll("#nav button").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-tab")===tab); });
     (tabs[tab]||renderOverview)();
@@ -875,6 +1762,11 @@
   }
   document.getElementById("nav").addEventListener("click", function(e){ if(e.target.getAttribute("data-tab")) go(e.target.getAttribute("data-tab")); });
   go("overview");
+
+  // ---------- PWA: 注册 service worker（离线可用） ----------
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+  }
 })();
 </script>
 </body>
