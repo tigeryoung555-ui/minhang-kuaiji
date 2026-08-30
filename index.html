@@ -211,7 +211,7 @@
       // 封面统一：只用一个课程名"民用航空运输企业会计"，当前所选课程由"民航会计/物流会计"切换按钮体现
       document.getElementById("appTitle").textContent="民用航空运输企业会计 · 智能教学平台";
       document.getElementById("appSub").textContent="智能体功能闭环：题库 → 组卷 → 自动评阅 → 成绩";
-      document.getElementById("appVer").textContent="智能教学闭环 v2 · 双课程（民航 / 物流）";
+      document.getElementById("appVer").textContent="智能教学闭环 v2 · 已部署";
     }
   }
   function renderCourseSwitch(){
@@ -696,7 +696,7 @@
     var opts=[];
     if(objective){
       var keys, labels;
-      if(q.type==="judge"){ keys=(COURSE==="LA") ? (q.options||["正确","错误"]) : ["对","错"]; }
+      if(q.type==="judge"){ keys=judgeOptions(q); }   // 旧代码对 LA 取对象后 .forEach 会崩溃
       else { keys=q.options.slice(); }
       keys.forEach(function(key){
         var o=h("button",{class:"opt"});
@@ -729,9 +729,28 @@
     wrap.appendChild(subBtn);
     box.innerHTML=""; box.appendChild(wrap);
   }
+  // 判断题选项标签数组：兼容 CA 的数组 ["对","错"] 与 LA 的对象 {A:"正确",B:"错误",C:"",D:""}
+  function judgeOptions(q){
+    var opts=q.options;
+    if(Array.isArray(opts)) return opts;
+    if(opts && typeof opts==="object"){
+      var out=[];
+      ["A","B","C","D"].forEach(function(k){ if(opts[k]) out.push(opts[k]); });
+      if(out.length) return out;
+    }
+    return ["正确","错误"];
+  }
   function judgeCorrectLabel(q){
-    if(COURSE==="LA"){ return q.answer==="A" ? (q.options&&q.options[0]) : (q.options&&q.options[1]); }
-    return q.answer===true ? "对" : "错";
+    // 归一化为「选项标签文字」。
+    //   CA：options=["对","错"]，answer 是 "正确"/"错误"（字符串，非布尔）
+    //   LA：options={A:"正确",B:"错误"}，answer 是 "A"/"B"（字母）
+    // 旧实现两处都错：CA 用 answer===true 判断导致答案为"正确"的题全判错；
+    // LA 用 options[0]/[1] 取对象下标，恒为 undefined，导致全部判错。
+    var opts=q.options||{}, arr=Array.isArray(opts);
+    var first=arr?opts[0]:opts.A, second=arr?opts[1]:opts.B;
+    var a=String(q.answer).trim();
+    var isTrue=(a==="对"||a==="正确"||a==="A"||a.toLowerCase()==="true");
+    return isTrue ? (first||"对") : (second||"错");
   }
   function isCorrectKey(q,key){ if(q.type==="judge") return key===judgeCorrectLabel(q); return key===q.answer; }
   function judge(q,sel){
@@ -1269,21 +1288,85 @@
   function renderDaily(){
     view.innerHTML="";
     view.appendChild(h("h2",{class:"sec"},[iconBulb(),"每日一题"]));
+    var t=todayStr();
+
+    // ---- 打卡统计 ----
+    var dates=Object.keys(STORE.daily||{}).sort();
+    var total=dates.length;
+    var weekN=0;
+    for(var wi=0;wi<dates.length;wi++){
+      var gap=(new Date(t+"T00:00:00")-new Date(dates[wi]+"T00:00:00"))/86400000;
+      if(gap>=0 && gap<7) weekN++;
+    }
+    var best=0, run=0, prev=null;
+    for(var bi=0;bi<dates.length;bi++){
+      var d0=dates[bi];
+      if(prev && (new Date(d0+"T00:00:00")-new Date(prev+"T00:00:00"))/86400000===1) run++; else run=1;
+      if(run>best) best=run;
+      prev=d0;
+    }
     var streak=streakDays();
-    view.appendChild(h("div",{class:"card", style:"margin-bottom:14px"},[
-      h("div",{class:"row", style:"justify-content:space-between"},[ h("b",["打卡"]), h("span",{class:"small"},[streak+" 天连续"]) ])
-    ]));
-    var doneId=STORE.daily[todayStr()];
+    var stats=h("div",{class:"dash-grid"});
+    [["连续打卡",streak+" 天"],["累计打卡",total+" 天"],["近 7 天",weekN+" 天"],["最长连续",best+" 天"]]
+      .forEach(function(p){
+        stats.appendChild(h("div",{class:"stat"},[h("div",{class:"n"},[String(p[1])]),h("div",{class:"l"},[p[0]])]));
+      });
+    view.appendChild(stats);
+
+    // ---- 打卡日历（近 35 天）----
+    var calCard=h("div",{class:"card",style:"margin-top:14px"});
+    calCard.appendChild(h("div",{class:"small muted"},["打卡日历（近 35 天）· 绿色 = 当日已领取并作答每日一题"]));
+    var grid=h("div",{style:"display:flex;flex-wrap:wrap;gap:4px;margin-top:8px"});
+    for(var i=34;i>=0;i--){
+      var d=dateAdd(t,-i);
+      var on=!!STORE.daily[d];
+      var isToday=(d===t);
+      var cellStyle="width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10.5px;cursor:default;background:"+
+        (on?"#1a7f37":"#eef1f6")+";color:"+(on?"#fff":"#6b7a90")+";"+(isToday?"outline:2px solid #1b6ec2;":"");
+      var cell=h("div",{style:cellStyle,title:d+(on?" 已完成":" 未打卡")},[String(parseInt(d.slice(8),10))]);
+      grid.appendChild(cell);
+    }
+    calCard.appendChild(grid);
+    view.appendChild(calCard);
+
+    // ---- 今日题目 ----
+    var doneId=STORE.daily[t];
     if(doneId){
       var qd=byId(QS,"question_id",doneId);
-      view.appendChild(h("div",{class:"callout"},["今日已完成（"+(qd?qd.kp_id:"")+"）。可复习或明日光临。"]));
+      view.appendChild(h("div",{class:"callout",style:"margin-top:14px"},["今日已完成（"+(qd?qd.kp_id:"")+"）。可复习或明日光临。"]));
       if(qd) view.appendChild(h("div",{class:"card"},[h("div",{class:"small muted"},["今日题目"]), qPanel(qd)]));
     } else {
       var pool=QS.filter(function(q){return q.review_status==="approved";});
       if(!pool.length) pool=QS;
       var pick=pool[Math.floor(Math.random()*pool.length)];
-      STORE.daily[todayStr()]=pick.question_id; saveStore();
-      view.appendChild(h("div",{class:"card"},[h("div",{class:"small muted"},["今日题目（"+pick.kp_id+"）"]), qPanel(pick)]));
+      STORE.daily[t]=pick.question_id; saveStore();
+      view.appendChild(h("div",{class:"card",style:"margin-top:14px"},[h("div",{class:"small muted"},["今日题目（"+pick.kp_id+"）"]), qPanel(pick)]));
+    }
+
+    // ---- 往期题目（可点击重做）----
+    var past=[];
+    for(var pi=dates.length-1;pi>=0 && past.length<10;pi--){ if(dates[pi]!==t) past.push(dates[pi]); }
+    if(past.length){
+      var hc=h("div",{class:"card",style:"margin-top:14px"});
+      hc.appendChild(h("div",{class:"small muted"},["往期题目（最近 "+past.length+" 天，点击可展开重做）"]));
+      past.forEach(function(d){
+        var q=byId(QS,"question_id",STORE.daily[d]);
+        if(!q) return;
+        var row=h("div",{style:"padding:7px 0;border-bottom:1px solid #eef1f6;cursor:pointer",
+          onclick:function(){
+            var box=document.getElementById("histBox");
+            if(!box) return;
+            box.innerHTML="";
+            box.appendChild(h("div",{class:"small muted",style:"margin-bottom:6px"},[d+" · "+(q.kp_id||"")]));
+            box.appendChild(qPanel(q));
+          }},[
+          h("span",{class:"pill blue"},[d]),
+          h("span",{style:"margin-left:8px"},[(q.stem||"").slice(0,44)])
+        ]);
+        hc.appendChild(row);
+      });
+      hc.appendChild(h("div",{id:"histBox",style:"margin-top:10px"}));
+      view.appendChild(hc);
     }
   }
 
@@ -1519,9 +1602,13 @@
     view.innerHTML="";
     view.appendChild(h("h2",{class:"sec"},[iconQuiz(),"智能评阅 · 自动判分"]));
     if(!PAPER){
-      view.appendChild(h("div",{class:"card empty"},["尚未生成试卷。请先到「试卷中心」生成一套试卷，再进入本题答题与评阅；或点下方按钮随机生成一套期末试卷演示。"]));
-      view.appendChild(h("button",{class:"btn",onclick:function(){ PAPER=genPaperJS("期末试卷",Math.floor(Math.random()*1e9)); renderAutoExam(); }},["随机生成期末试卷并演示"]));
-      return;
+      // 首次进入自动载入一套固定 seed 的演示卷，避免出现空白页
+      PAPER=genPaperJS("期末试卷", 20260830);
+      view.appendChild(h("div",{class:"callout"},[
+        "尚未生成正式试卷，已自动载入一套「期末试卷」演示卷（固定 seed，可复现）。正式使用请到「试卷中心」按规则组卷，或点下方按钮换一套随机卷。"
+      ]));
+      view.appendChild(h("button",{class:"btn sm",style:"margin-bottom:10px",
+        onclick:function(){ PAPER=genPaperJS("期末试卷",Math.floor(Math.random()*1e9)); renderAutoExam(); }},["换一套随机试卷"]));
     }
     if(!window.__examAnswers) window.__examAnswers={};
     var ans=window.__examAnswers;
@@ -1534,12 +1621,22 @@
       var objective=(it.type==="single"||it.type==="multiple"||it.type==="judge");
       if(objective){
         if(it.type==="judge"){
-          var jk=(COURSE==="LA")?(it.options||["正确","错误"]):["对","错"];
-          jk.forEach(function(k){ var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=k; }}); qwrap.appendChild(o); });
+          // 判断题存「标签文字」，与 judgeCorrectLabel 的返回口径一致（旧代码 LA 下会崩溃）
+          judgeOptions(it).forEach(function(label){
+            var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=label; }},[label]);
+            qwrap.appendChild(o);
+          });
         } else if(it.type==="multiple"){
-          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return; var o=h("button",{class:"opt",onclick:function(){ var on=o.classList.toggle("sel"); if(on){ (ans[it.qid]=ans[it.qid]||[]).push(k); } else { ans[it.qid]=(ans[it.qid]||[]).filter(function(x){return x!==k;}); } }}); qwrap.appendChild(o); });
+          // 选择题存「选项字母 A/B/C/D」；旧代码漏传 children，导致按钮全是空白
+          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return;
+            var o=h("button",{class:"opt",onclick:function(){ var on=o.classList.toggle("sel"); if(on){ (ans[it.qid]=ans[it.qid]||[]).push(k); } else { ans[it.qid]=(ans[it.qid]||[]).filter(function(x){return x!==k;}); } }},[k+". "+it.options[k]]);
+            qwrap.appendChild(o);
+          });
         } else {
-          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return; var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=k; }}); qwrap.appendChild(o); });
+          Object.keys(it.options).forEach(function(k){ if(!it.options[k]) return;
+            var o=h("button",{class:"opt",onclick:function(){ qwrap.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel");}); o.classList.add("sel"); ans[it.qid]=k; }},[k+". "+it.options[k]]);
+            qwrap.appendChild(o);
+          });
         }
       } else {
         var ta=h("textarea",{rows:"3",style:"width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit"});
@@ -1609,6 +1706,11 @@
     btns.appendChild(h("button",{class:"btn sm ghost",onclick:function(){ ta.value=SAMPLE_CLASS; }},["载入示例班级"]));
     view.appendChild(btns);
     view.appendChild(h("div",{id:"gradeOut",style:"margin-top:14px"}));
+    // 默认载入示例班级，避免打开即空白；粘贴真实成绩后点「生成报表」覆盖
+    view.appendChild(h("div",{class:"callout",style:"margin-top:12px"},[
+      "下方已默认载入示例班级（10 人）数据，便于查看报表效果。粘贴真实成绩后点「生成报表」即可覆盖。"
+    ]));
+    computeGrade(SAMPLE_CLASS);
   }
   function computeGrade(csv){
     var rows=csv.trim().split(/\n+/).map(function(l){return l.split(/[,，\t]/).map(function(x){return x.trim();});}).filter(function(r){return r.length>=5;});
